@@ -1,3 +1,5 @@
+'use client';
+
 import React from 'react';
 import { Camera } from 'lucide-react';
 import { PageBanner } from '../components/PageBanner';

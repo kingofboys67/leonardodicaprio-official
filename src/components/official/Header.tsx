@@ -1,3 +1,5 @@
+'use client';
+
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import {
@@ -61,7 +63,6 @@ export const Header: React.FC = () => {
         <Link
           to="/"
           className="flex items-center gap-2 sm:gap-3 cursor-pointer group select-none min-w-0"
-          aria-label="Leonardo DiCaprio Official - Home"
         >
           {/* Circular Portrait Logo Placeholder */}
           <div className="relative w-10 h-10 sm:w-14 sm:h-14 rounded-full overflow-hidden ring-2 ring-[#F28C28] shadow-md shadow-orange-500/20 shrink-0 group-hover:scale-105 transition-transform duration-200 bg-[var(--surface-light)]">

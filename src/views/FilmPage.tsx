@@ -1,3 +1,5 @@
+'use client';
+
 import React, { useEffect, useState } from 'react';
 import { Link, Navigate, useParams } from 'react-router-dom';
 import {
@@ -17,6 +19,7 @@ import {
   Lightbulb,
   Camera,
   CalendarDays,
+  Share2,
 } from 'lucide-react';
 import { MOVIES_DATA } from '../data/content';
 import { FILM_IMPACT } from '../data/filmImpact';
@@ -24,6 +27,8 @@ import { FILM_STILLS } from '../data/stills';
 import { FILMOGRAPHY } from '../data/filmography';
 import { FilmLitePage } from './FilmLitePage';
 import { useApp } from '../context/AppContext';
+import { SEOHead } from '../components/SEOHead';
+import { getMovieSchema, getBreadcrumbSchema } from '../utils/schema';
 
 const slugify = (n: string) =>
   n
@@ -45,6 +50,7 @@ const CastPhoto: React.FC<{ name: string }> = ({ name }) => {
       src={`/assets/cast/${slugify(name)}.jpg`}
       alt={name}
       loading="lazy"
+      decoding="async"
       className="w-16 h-20 rounded-lg object-cover shrink-0 bg-black/10"
       onError={() => setFailed(true)}
     />
@@ -60,7 +66,7 @@ export const FilmPage: React.FC = () => {
 
 const FilmDeepPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
-  const { playMovie } = useApp();
+  const { playMovie, openQuoteCard } = useApp();
   const [posterFailed, setPosterFailed] = useState(false);
   const [stillIdx, setStillIdx] = useState<number | null>(null);
 
@@ -101,8 +107,31 @@ const FilmDeepPage: React.FC = () => {
     { icon: Star, label: 'Audience rating', value: `${movie.rating} / 10` },
   ];
 
+  const movieSchema = getMovieSchema({
+    id: movie.id,
+    title: movie.title,
+    year: movie.year,
+    director: movie.director,
+    role: movie.role,
+    synopsis: movie.synopsis,
+    genres: movie.genres,
+    duration: movie.duration,
+    image: `/assets/posters/${movie.id}.jpg`,
+  });
+
+  const breadcrumbSchema = getBreadcrumbSchema([
+    { name: 'Filmography', path: '/filmography' },
+    { name: movie.title, path: `/film/${movie.id}` },
+  ]);
+
   return (
     <div className="min-h-screen pt-24 sm:pt-28 pb-20">
+      <SEOHead
+        title={`${movie.title} (${movie.year}) | Leonardo DiCaprio Official`}
+        description={`${movie.title} (${movie.year}) directed by ${movie.director}. Leonardo DiCaprio stars as ${movie.role}. Full story, box office metrics, and behind the scenes.`}
+        type="video.other"
+        jsonLd={[movieSchema, breadcrumbSchema]}
+      />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <Link
           to="/filmography"
@@ -120,6 +149,9 @@ const FilmDeepPage: React.FC = () => {
                 <img
                   src={`/assets/posters/${movie.id}.jpg`}
                   alt={`${movie.title} poster`}
+                  loading="eager"
+                  fetchPriority="high"
+                  decoding="async"
                   className="w-full h-full object-cover"
                   onError={() => setPosterFailed(true)}
                 />
@@ -238,9 +270,27 @@ const FilmDeepPage: React.FC = () => {
               Leonardo&apos;s <span className="gold-text-gradient">performance</span>
             </h2>
             <p className="text-sm sm:text-base text-[var(--text-muted)] leading-relaxed">{info.leoRole}</p>
-            <blockquote className="mt-6 pl-5 border-l-4 border-[#F28C28] italic font-serif text-lg text-[#141414] dark:text-white">
-              “{movie.quote}”
-            </blockquote>
+            {movie?.quote && (
+              <div className="mt-6">
+                <blockquote className="pl-5 border-l-4 border-[#F28C28] italic font-serif text-lg text-[#141414] dark:text-white">
+                  “{movie.quote}”
+                </blockquote>
+                <button
+                  onClick={() =>
+                    openQuoteCard({
+                      id: movie.id,
+                      text: movie.quote,
+                      source: `${movie.title} (${movie.year})`,
+                      context: `Directed by ${movie.director} · Leonardo as ${movie.role}`,
+                    })
+                  }
+                  className="mt-3 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-orange-500/10 hover:bg-orange-500/20 border border-orange-500/30 text-orange-400 hover:text-orange-300 text-xs font-mono font-medium transition-all cursor-pointer"
+                >
+                  <Share2 className="w-3.5 h-3.5" />
+                  <span>Share Quote Card</span>
+                </button>
+              </div>
+            )}
 
             {info.behindTheScenes && (
               <>

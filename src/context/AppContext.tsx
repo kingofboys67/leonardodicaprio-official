@@ -1,3 +1,5 @@
+'use client';
+
 import React, { createContext, useContext, useState, useEffect, useRef } from 'react';
 import { TRAILERS } from '../data/trailers';
 import {
@@ -49,6 +51,14 @@ interface AppContextType {
   openLightbox: (photo: GalleryPhoto, allPhotos?: GalleryPhoto[]) => void;
   selectLightboxPhoto: (photo: GalleryPhoto) => void;
   closeLightbox: () => void;
+
+  // Quote Card Modal
+  activeQuoteCard: {
+    isOpen: boolean;
+    quote: { id?: string; text: string; source: string; context?: string } | null;
+  };
+  openQuoteCard: (quote: { id?: string; text: string; source: string; context?: string }) => void;
+  closeQuoteCard: () => void;
 
   // Watchlist
   watchlist: string[];
@@ -287,6 +297,26 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
   const isMovieSaved = (movieId: string) => watchlist.includes(movieId);
 
+  // Quote Card Modal
+  const [activeQuoteCard, setActiveQuoteCard] = useState<{
+    isOpen: boolean;
+    quote: { id?: string; text: string; source: string; context?: string } | null;
+  }>({
+    isOpen: false,
+    quote: null,
+  });
+
+  const openQuoteCard = (quote: { id?: string; text: string; source: string; context?: string }) => {
+    setActiveQuoteCard({
+      isOpen: true,
+      quote,
+    });
+  };
+
+  const closeQuoteCard = () => {
+    setActiveQuoteCard((prev) => ({ ...prev, isOpen: false }));
+  };
+
   return (
     <AppContext.Provider
       value={{
@@ -310,6 +340,9 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         openLightbox,
         selectLightboxPhoto,
         closeLightbox,
+        activeQuoteCard,
+        openQuoteCard,
+        closeQuoteCard,
         watchlist,
         toggleWatchlist,
         isMovieSaved,

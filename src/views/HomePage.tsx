@@ -1,3 +1,5 @@
+'use client';
+
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import {
@@ -26,6 +28,8 @@ import {
 } from '../data/content';
 import { PlanetarySection } from '../components/PlanetarySection';
 import { useApp } from '../context/AppContext';
+import { SEOHead } from '../components/SEOHead';
+import { getProfilePageSchema } from '../utils/schema';
 
 // Films shown in Featured Masterworks, in display order.
 // Covers are read from /assets/posters/<id>.jpg (portrait 2:3); until a cover
@@ -109,20 +113,6 @@ export const HomePage: React.FC = () => {
   const navigate = useNavigate();
   const { playMovie, openMovieDetail, openLightbox, playReel } = useApp();
 
-  useEffect(() => {
-    document.title = 'Leonardo DiCaprio | Official Website';
-    let metaTag = document.querySelector('meta[name="description"]');
-    if (!metaTag) {
-      metaTag = document.createElement('meta');
-      metaTag.setAttribute('name', 'description');
-      document.head.appendChild(metaTag);
-    }
-    metaTag.setAttribute(
-      'content',
-      'The official portal of Academy Award-winning actor, UN Messenger of Peace, and environmental activist Leonardo DiCaprio.'
-    );
-  }, []);
-
   // Curated 3 featured movies
   const featuredMovies = MOVIES_DATA.filter((m) =>
     FEATURED_IDS.includes(m.id)
@@ -141,6 +131,11 @@ export const HomePage: React.FC = () => {
 
   return (
     <div className="min-h-screen">
+      <SEOHead
+        title="Leonardo DiCaprio | Official Website"
+        description="The official portal of Academy Award-winning actor, UN Messenger of Peace, and environmental activist Leonardo DiCaprio."
+        jsonLd={getProfilePageSchema('/')}
+      />
       {/* 1. Hero Cinema Showcase */}
       <HeroSection
         movies={MOVIES_DATA}
@@ -276,7 +271,7 @@ export const HomePage: React.FC = () => {
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity p-4 flex flex-col justify-end">
                   <span className="text-xs font-mono text-[#F28C28] font-bold">{photo.category}</span>
-                  <h4 className="text-sm font-bold text-white line-clamp-1">{photo.title}</h4>
+                  <h3 className="text-sm font-bold text-white line-clamp-1">{photo.title}</h3>
                   <p className="text-[11px] text-white/80 line-clamp-2">{photo.caption}</p>
                   {photo.credit && <p className="text-[10px] text-white/60 mt-1 line-clamp-1">{photo.credit}</p>}
                 </div>
@@ -335,9 +330,9 @@ export const HomePage: React.FC = () => {
                   <span className="text-[10px] font-mono uppercase text-[#F28C28] font-bold">
                     {reel.category}
                   </span>
-                  <h4 className="text-sm font-bold text-[#141414] dark:text-white line-clamp-1 mt-0.5">
+                  <h3 className="text-sm font-bold text-[#141414] dark:text-white line-clamp-1 mt-0.5">
                     {reel.title}
-                  </h4>
+                  </h3>
                   <p className="text-xs text-[var(--text-muted)] line-clamp-2 mt-1">
                     {reel.caption}
                   </p>

@@ -1,3 +1,5 @@
+'use client';
+
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, BookOpen, ExternalLink, Film, Globe2, Heart, Quote, Sparkles, Star } from 'lucide-react';
@@ -72,6 +74,15 @@ const Era: React.FC<{ era: LegacyEra; index: number }> = ({ era, index }) => {
           {era.paragraphs.map((p, i) => (
             <p key={i}>{p}</p>
           ))}
+        </div>
+        <div className="mt-6">
+          <Link
+            to={`/legacy/${era.id}`}
+            className="inline-flex items-center gap-2 text-xs font-mono font-bold uppercase tracking-wider text-[#F28C28] hover:text-amber-400 group"
+          >
+            <span>Explore {era.years} chapter &amp; archive</span>
+            <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
+          </Link>
         </div>
       </div>
       <div className={`lg:col-span-7 grid ${grid} gap-3 ${index % 2 === 1 ? 'lg:order-1' : ''}`}>

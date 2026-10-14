@@ -1,3 +1,5 @@
+'use client';
+
 import React, { useEffect, useRef, useState } from 'react';
 import { Sparkles, ArrowRight, ShieldCheck, Heart, Film, Sliders, Eye, RefreshCw } from 'lucide-react';
 
@@ -271,6 +273,9 @@ export const HeroMotion: React.FC<HeroMotionProps> = ({ onNavigate, onOpenSearch
                 <img
                   src={selectedPhoto}
                   alt="Leonardo DiCaprio — Official Hero Motion Portrait"
+                  loading="eager"
+                  fetchPriority="high"
+                  decoding="async"
                   className="w-full h-full object-cover object-center transform group-hover:scale-105 transition-transform duration-700"
                 />
 

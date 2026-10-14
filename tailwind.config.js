@@ -4,6 +4,7 @@ export default {
   content: [
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}",
+    "./app/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
     extend: {
@@ -25,9 +26,9 @@ export default {
         },
       },
       fontFamily: {
-        serif: ["Playfair Display", "Cinzel", "serif"],
-        sans: ["Inter", "-apple-system", "BlinkMacSystemFont", "sans-serif"],
-        display: ["Cinzel", "Playfair Display", "serif"],
+        serif: ["var(--font-playfair)", "Playfair Display", "serif"],
+        sans: ["var(--font-inter)", "Inter", "-apple-system", "BlinkMacSystemFont", "sans-serif"],
+        display: ["var(--font-cinzel)", "Cinzel", "Playfair Display", "serif"],
       },
       animation: {
         "spin-slow": "spin 25s linear infinite",

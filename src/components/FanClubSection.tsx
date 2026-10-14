@@ -1,3 +1,5 @@
+'use client';
+
 import React, { useState } from 'react';
 import { Sparkles, Award, CheckCircle, ArrowRight, Download, HelpCircle, Mail, Heart } from 'lucide-react';
 import confetti from 'canvas-confetti';

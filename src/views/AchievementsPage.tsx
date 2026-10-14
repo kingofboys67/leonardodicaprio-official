@@ -1,25 +1,24 @@
-import React, { useEffect } from 'react';
+'use client';
+
+import React from 'react';
 import { Trophy } from 'lucide-react';
 import { DarkBackdrop } from '../components/DarkBackdrop';
 import { AchievementsStory } from '../components/AchievementsStory';
+import { SEOHead } from '../components/SEOHead';
+import { getBreadcrumbSchema, getProfilePageSchema } from '../utils/schema';
 
 export const AchievementsPage: React.FC = () => {
-  useEffect(() => {
-    document.title = 'Achievements & Honors | Leonardo DiCaprio Official';
-    let metaTag = document.querySelector('meta[name="description"]');
-    if (!metaTag) {
-      metaTag = document.createElement('meta');
-      metaTag.setAttribute('name', 'description');
-      document.head.appendChild(metaTag);
-    }
-    metaTag.setAttribute(
-      'content',
-      "Explore Leonardo DiCaprio's awards, honours, records, environmental leadership and family roots."
-    );
-  }, []);
+  const profilePage = getProfilePageSchema('/achievements');
+  const breadcrumbs = getBreadcrumbSchema([{ name: 'Achievements & Honors', path: '/achievements' }]);
 
   return (
     <div className="min-h-screen">
+      <SEOHead
+        title="Achievements & Honors | Leonardo DiCaprio Official"
+        description="Explore Leonardo DiCaprio's Academy Awards, BAFTA, Golden Globe wins, UN Messenger of Peace honors, global environmental awards, and lifetime acclaim."
+        type="profile"
+        jsonLd={[profilePage, breadcrumbs]}
+      />
       {/* The backdrop starts below the navigation bar so the bar keeps its own colour */}
       <div className="relative mt-20 overflow-hidden dark-scope">
         <DarkBackdrop image="/assets/portraits/portrait-2008.jpg" side="left" position="50% 12%">
@@ -41,14 +40,12 @@ export const AchievementsPage: React.FC = () => {
               <Trophy className="w-3.5 h-3.5" />
               <span className="font-semibold uppercase tracking-widest text-[11px]">Hall of Acclaim</span>
             </div>
-            <div
-              role="heading"
-              aria-level={1}
+            <h1
               className="cinema-title text-3xl sm:text-5xl md:text-6xl font-black tracking-tight mb-4"
               style={{ color: '#FFFFFF', textShadow: '0 4px 24px rgba(0,0,0,0.55)' }}
             >
               His Awards, Honours &amp; Global <span className="gold-text-gradient">Recognition</span>
-            </div>
+            </h1>
             <p className="max-w-xl text-sm sm:text-base md:text-lg font-light leading-relaxed mx-auto lg:mx-0" style={{ color: 'rgba(255,255,255,0.85)', textShadow: '0 2px 12px rgba(0,0,0,0.6)' }}>
               Everything he has achieved: the awards, the honours, the records, his work for the planet, and where he comes from.
             </p>

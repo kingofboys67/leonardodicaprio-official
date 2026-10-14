@@ -25,3 +25,10 @@ Thumbs.db
 /*.jpg
 /*.jpeg
 /*.png
+
+# Next.js build
+.next/
+out/
+
+# Local audit output
+scripts/*.json

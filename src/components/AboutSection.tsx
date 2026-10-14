@@ -1,8 +1,12 @@
+'use client';
+
 import React from 'react';
-import { Award, Globe2, Sparkles, Quote, Calendar, ArrowUpRight } from 'lucide-react';
+import { Award, Globe2, Sparkles, Quote, Calendar, ArrowUpRight, Share2 } from 'lucide-react';
 import { FAMOUS_QUOTES } from '../data/content';
+import { useApp } from '../context/AppContext';
 
 export const AboutSection: React.FC = () => {
+  const { openQuoteCard } = useApp();
   const milestones = [
     {
       year: '1993',
@@ -148,6 +152,20 @@ export const AboutSection: React.FC = () => {
               <span className="text-xs text-slate-400 mt-1">
                 {FAMOUS_QUOTES[0].source}
               </span>
+              <button
+                onClick={() =>
+                  openQuoteCard({
+                    id: 'oscar-2016',
+                    text: FAMOUS_QUOTES[0].text,
+                    source: FAMOUS_QUOTES[0].source,
+                    context: '88th Academy Awards Acceptance Speech',
+                  })
+                }
+                className="mt-4 inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-orange-500/15 hover:bg-orange-500/25 border border-orange-500/30 text-orange-400 hover:text-orange-300 text-xs font-mono font-semibold transition-all cursor-pointer"
+              >
+                <Share2 className="w-3.5 h-3.5" />
+                <span>Share Quote Card</span>
+              </button>
             </div>
           </div>
         </div>

@@ -1,4 +1,8 @@
+'use client';
+
 import React, { useEffect, useRef, useState } from 'react';
+import { SEOHead } from '../components/SEOHead';
+import { getBreadcrumbSchema, getProfilePageSchema } from '../utils/schema';
 import { Link } from 'react-router-dom';
 import confetti from 'canvas-confetti';
 import { ArrowDown, CheckCircle2, Globe2, HandHeart, Heart, Mail, Sparkles, Volume2, VolumeX } from 'lucide-react';
@@ -34,16 +38,7 @@ export const CharityPage: React.FC = () => {
   const [pledgeName, setPledgeName] = useState('');
   const [pledged, setPledged] = useState(false);
 
-  useEffect(() => {
-    document.title = 'Charity & Conservation | Leonardo DiCaprio Official';
-    let meta = document.querySelector('meta[name="description"]');
-    if (!meta) {
-      meta = document.createElement('meta');
-      meta.setAttribute('name', 'description');
-      document.head.appendChild(meta);
-    }
-    meta.setAttribute('content', "Leonardo DiCaprio's work to protect wildlife, forests, oceans and the climate, and how you can help.");
-  }, []);
+
 
   useEffect(() => {
     if (videoRef.current) videoRef.current.muted = muted;
@@ -81,8 +76,17 @@ export const CharityPage: React.FC = () => {
 
   const scrollTo = (id: string) => document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
 
+  const profilePage = getProfilePageSchema('/charity');
+  const breadcrumbs = getBreadcrumbSchema([{ name: 'Charity & Conservation', path: '/charity' }]);
+
   return (
     <div className="min-h-screen dark-scope bg-[#07090f]">
+      <SEOHead
+        title="Charity & Conservation | Leonardo DiCaprio Official"
+        description="Leonardo DiCaprio's global environmental work with Re:wild, Earth Alliance, and the Leonardo DiCaprio Foundation protecting biodiversity, oceans, and indigenous lands."
+        type="profile"
+        jsonLd={[profilePage, breadcrumbs]}
+      />
       {/* Hero with looping footage */}
       <div className="relative mt-20 h-[78vh] min-h-[520px] overflow-hidden">
         <video
@@ -104,14 +108,12 @@ export const CharityPage: React.FC = () => {
               <Heart className="w-3.5 h-3.5 fill-emerald-400 text-emerald-400" />
               <span className="font-semibold uppercase tracking-widest text-[11px]">Conservation &amp; Climate</span>
             </div>
-            <div
-              role="heading"
-              aria-level={1}
+            <h1
               className="cinema-title text-4xl sm:text-6xl md:text-7xl font-black tracking-tight leading-[1.05]"
               style={{ color: '#FFFFFF', textShadow: '0 4px 28px rgba(0,0,0,0.6)' }}
             >
               Defending Earth&apos;s <span className="emerald-text-gradient">Wild Heart</span>
-            </div>
+            </h1>
             <p className="mt-6 max-w-2xl text-base sm:text-lg font-light leading-relaxed" style={{ color: 'rgba(255,255,255,0.88)', textShadow: '0 2px 14px rgba(0,0,0,0.7)' }}>
               For more than twenty-five years, Leonardo DiCaprio has put his voice and his influence behind protecting the
               natural world. This is the work, and how you can stand with it.

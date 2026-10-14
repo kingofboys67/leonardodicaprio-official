@@ -1,3 +1,5 @@
+'use client';
+
 import React, { useEffect } from 'react';
 import { X, ChevronLeft, ChevronRight, Download, Calendar, Tag } from 'lucide-react';
 import { GalleryPhoto } from '../../data/content';

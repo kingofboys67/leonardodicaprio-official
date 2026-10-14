@@ -1,0 +1,46 @@
+# Robots.txt for Leonardo DiCaprio Official Website
+# Domain: https://leonardodicaprioofficial.com
+
+User-agent: *
+Allow: /
+Disallow: /api/
+
+# Search Engine Crawlers
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: Applebot
+Allow: /
+
+# Generative AI, LLM & AI Search Engine Crawlers (GEO Optimization)
+User-agent: GPTBot
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Claude-Web
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: Amazonbot
+Allow: /
+
+# Sitemap References
+Sitemap: https://leonardodicaprioofficial.com/sitemap.xml
+Sitemap: https://leonardodicaprioofficial.com/sitemap-image.xml
+Sitemap: https://leonardodicaprioofficial.com/sitemap-video.xml

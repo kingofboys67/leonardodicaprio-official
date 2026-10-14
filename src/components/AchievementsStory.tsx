@@ -1,3 +1,5 @@
+'use client';
+
 import React, { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, Award, ExternalLink, Globe2, Home, Medal, Star, Trophy, Users } from 'lucide-react';
@@ -132,6 +134,25 @@ export const AchievementsStory: React.FC = () => {
                   </li>
                 ))}
               </ul>
+              <div className="mt-4 pt-3 border-t border-[var(--border)] flex justify-between items-center">
+                <Link
+                  to={
+                    a.name.includes('Academy')
+                      ? '/achievements/academy-awards'
+                      : a.name.includes('Golden Globe')
+                      ? '/achievements/golden-globes'
+                      : a.name.includes('BAFTA')
+                      ? '/achievements/bafta-awards'
+                      : a.name.includes('Screen Actors Guild')
+                      ? '/achievements/sag-awards'
+                      : '/achievements/critics-choice'
+                  }
+                  className="text-xs font-mono font-bold text-[#F28C28] hover:text-amber-400 inline-flex items-center gap-1.5"
+                >
+                  <span>Explore full record &amp; nominations</span>
+                  <ArrowRight className="w-3.5 h-3.5" />
+                </Link>
+              </div>
             </div>
           ))}
         </div>

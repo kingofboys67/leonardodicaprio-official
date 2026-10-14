@@ -1,3 +1,5 @@
+'use client';
+
 import React, { useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, CalendarClock, Film, Play, Search, Star, Trophy } from 'lucide-react';
@@ -51,19 +53,85 @@ export const FilmographyBrowser: React.FC = () => {
   const { playTrailerById } = useApp();
   const [kind, setKind] = useState<Kind>('all');
   const [sort, setSort] = useState<Sort>('newest');
+  const [selectedDecade, setSelectedDecade] = useState('all');
+  const [selectedGenre, setSelectedGenre] = useState('all');
+  const [selectedRole, setSelectedRole] = useState('all');
   const [query, setQuery] = useState('');
+
+  const allGenres = useMemo(() => {
+    const set = new Set<string>();
+    FILMOGRAPHY.forEach((f) => {
+      f.genres?.forEach((g) => set.add(g));
+    });
+    return Array.from(set).sort();
+  }, []);
 
   const trailer = (e: FilmographyEntry) => playTrailerById(e.id, e.title, `Directed by ${e.director}`);
 
   const list = useMemo(() => {
     let l = FILMOGRAPHY.filter((f) => (kind === 'all' ? true : f.kind === kind));
+
+    // Year / Decade filter
+    if (selectedDecade !== 'all') {
+      const startYear = parseInt(selectedDecade.replace('s', ''), 10);
+      l = l.filter((f) => f.year >= startYear && f.year < startYear + 10);
+    }
+
+    // Genre filter
+    if (selectedGenre !== 'all') {
+      l = l.filter((f) => f.genres && f.genres.includes(selectedGenre));
+    }
+
+    // Role filter
+    if (selectedRole === 'narrator') {
+      l = l.filter(
+        (f) =>
+          f.role.toLowerCase().includes('narrator') ||
+          f.role.toLowerCase().includes('host') ||
+          f.kind === 'documentary'
+      );
+    } else if (selectedRole === 'lead') {
+      l = l.filter(
+        (f) =>
+          !f.role.toLowerCase().includes('supporting') &&
+          !f.role.toLowerCase().includes('narrator') &&
+          f.id !== 'whats-eating-gilbert-grape' &&
+          f.id !== 'django-unchained' &&
+          f.id !== 'celebrity' &&
+          f.id !== 'poison-ivy' &&
+          f.id !== 'critters-3'
+      );
+    } else if (selectedRole === 'support') {
+      l = l.filter(
+        (f) =>
+          f.role.toLowerCase().includes('supporting') ||
+          f.id === 'whats-eating-gilbert-grape' ||
+          f.id === 'django-unchained' ||
+          f.id === 'celebrity' ||
+          f.id === 'poison-ivy' ||
+          f.id === 'critters-3'
+      );
+    }
+
     const q = query.trim().toLowerCase();
-    if (q) l = l.filter((f) => f.title.toLowerCase().includes(q) || f.director.toLowerCase().includes(q) || f.role.toLowerCase().includes(q));
+    if (q) {
+      l = l.filter(
+        (f) =>
+          f.title.toLowerCase().includes(q) ||
+          f.director.toLowerCase().includes(q) ||
+          f.role.toLowerCase().includes(q)
+      );
+    }
+
     l = [...l].sort((a, b) =>
-      sort === 'newest' ? b.year - a.year : sort === 'oldest' ? a.year - b.year : (b.score ?? 0) - (a.score ?? 0)
+      sort === 'newest'
+        ? b.year - a.year
+        : sort === 'oldest'
+        ? a.year - b.year
+        : (b.score ?? 0) - (a.score ?? 0)
     );
     return l;
-  }, [kind, sort, query]);
+  }, [kind, sort, query, selectedDecade, selectedGenre, selectedRole]);
 
   const counts = {
     film: FILMOGRAPHY.filter((f) => f.kind === 'film').length,
@@ -274,6 +342,48 @@ export const FilmographyBrowser: React.FC = () => {
                 className="w-full sm:w-64 pl-9 pr-3 py-2 rounded-xl text-sm bg-[var(--surface)] border border-[var(--border)] text-[var(--text)] outline-none focus:border-[#F28C28]"
               />
             </label>
+            {/* Year / Decade Filter */}
+            <select
+              value={selectedDecade}
+              onChange={(e) => setSelectedDecade(e.target.value)}
+              className="px-3 py-2 rounded-xl text-sm bg-[var(--surface)] border border-[var(--border)] text-[var(--text)] outline-none cursor-pointer"
+              aria-label="Filter by Decade"
+            >
+              <option value="all">All Decades</option>
+              <option value="2020s">2020s</option>
+              <option value="2010s">2010s</option>
+              <option value="2000s">2000s</option>
+              <option value="1990s">1990s</option>
+              <option value="1980s">1980s</option>
+            </select>
+
+            {/* Genre Filter */}
+            <select
+              value={selectedGenre}
+              onChange={(e) => setSelectedGenre(e.target.value)}
+              className="px-3 py-2 rounded-xl text-sm bg-[var(--surface)] border border-[var(--border)] text-[var(--text)] outline-none cursor-pointer"
+              aria-label="Filter by Genre"
+            >
+              <option value="all">All Genres</option>
+              {allGenres.map((g) => (
+                <option key={g} value={g}>{g}</option>
+              ))}
+            </select>
+
+            {/* Role Filter */}
+            <select
+              value={selectedRole}
+              onChange={(e) => setSelectedRole(e.target.value)}
+              className="px-3 py-2 rounded-xl text-sm bg-[var(--surface)] border border-[var(--border)] text-[var(--text)] outline-none cursor-pointer"
+              aria-label="Filter by Role"
+            >
+              <option value="all">All Roles</option>
+              <option value="lead">Leading Actor</option>
+              <option value="support">Supporting Actor</option>
+              <option value="narrator">Narrator / Host</option>
+            </select>
+
+            {/* Sort Dropdown */}
             <select
               value={sort}
               onChange={(e) => setSort(e.target.value as Sort)}

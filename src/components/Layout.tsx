@@ -1,5 +1,6 @@
+'use client';
+
 import React from 'react';
-import { Outlet } from 'react-router-dom';
 import { Header } from './official/Header';
 import { Footer } from './Footer';
 import { ScrollToTop } from './ScrollToTop';
@@ -9,9 +10,10 @@ import { TrailerModal } from './streaming/TrailerModal';
 import { MovieDetailModal } from './streaming/MovieDetailModal';
 import { PhotoLightboxModal } from './official/PhotoLightboxModal';
 import { SearchModal } from './SearchModal';
+import { QuoteCardModal } from './QuoteCardModal';
 import { useApp } from '../context/AppContext';
 
-export const Layout: React.FC = () => {
+export const Layout: React.FC<{ children?: React.ReactNode }> = ({ children }) => {
   const {
     activePlayer,
     closePlayer,
@@ -25,6 +27,8 @@ export const Layout: React.FC = () => {
     activeLightbox,
     closeLightbox,
     selectLightboxPhoto,
+    activeQuoteCard,
+    closeQuoteCard,
   } = useApp();
 
   return (
@@ -38,7 +42,7 @@ export const Layout: React.FC = () => {
       {/* Main Routed Page Content */}
       <main className="flex-grow">
         <PageTransition>
-          <Outlet />
+          {children}
         </PageTransition>
       </main>
 
@@ -81,6 +85,11 @@ export const Layout: React.FC = () => {
       />
 
       <SearchModal />
+      <QuoteCardModal
+        isOpen={activeQuoteCard.isOpen}
+        onClose={closeQuoteCard}
+        quote={activeQuoteCard.quote}
+      />
     </div>
   );
 };

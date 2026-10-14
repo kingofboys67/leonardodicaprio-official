@@ -26,6 +26,7 @@ interface Res {
 const SITE = 'https://leonardodicaprioofficial.com';
 const MANAGEMENT_EMAIL = 'management@leonardodicaprioofficial.com';
 const CHARITY_EMAIL = 'charity@leonardodicaprioofficial.com';
+const FAN_CLUB_EMAIL = 'fanclub@leonardodicaprioofficial.com';
 const FROM_WELCOME = 'Leonardo DiCaprio Official <welcome@leonardodicaprioofficial.com>';
 const FROM_ALERTS = 'Website Sign-ups <notifications@leonardodicaprioofficial.com>';
 
@@ -292,7 +293,7 @@ export const buildEmails = (type: FormType, d: Fields) => {
   if (type === 'fanclub') {
     return {
       welcome: { subject: `Welcome to the fan club, ${firstName(d.name)}`, html: fanWelcome(d) },
-      alert: { to: MANAGEMENT_EMAIL, subject: `New fan club member: ${d.name}`, html: fanAlert(d) },
+      alert: { to: FAN_CLUB_EMAIL, subject: `New fan club member: ${d.name}`, html: fanAlert(d) },
     };
   }
   if (type === 'newsletter') {

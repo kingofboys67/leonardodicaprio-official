@@ -11,7 +11,7 @@ export const CHARITY_EMAIL = 'charity@leonardodicaprioofficial.com';
 export const DONATION_EMAIL = CHARITY_EMAIL;
 
 /**
- * Email address that receives fan club sign-ups. Routed directly to management.
+ * Email address that receives fan club sign-ups.
  */
-export const FAN_CLUB_EMAIL = MANAGEMENT_EMAIL;
+export const FAN_CLUB_EMAIL = 'fanclub@leonardodicaprioofficial.com';
 

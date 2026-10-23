@@ -141,6 +141,7 @@ export async function GET(req: NextRequest) {
           >
             <div
               style={{
+                display: 'flex',
                 fontSize: quoteData.text.length > 120 ? '34px' : '44px',
                 lineHeight: 1.35,
                 fontStyle: 'italic',
@@ -148,7 +149,7 @@ export async function GET(req: NextRequest) {
                 textShadow: '0 2px 10px rgba(0,0,0,0.5)',
               }}
             >
-              “{quoteData.text}”
+              {`“${quoteData.text}”`}
             </div>
             <div
               style={{
@@ -161,7 +162,7 @@ export async function GET(req: NextRequest) {
                 fontWeight: 600,
               }}
             >
-              <span>— {quoteData.source}</span>
+              <span>{`— ${quoteData.source}`}</span>
               <span style={{ color: 'rgba(255,255,255,0.4)' }}>·</span>
               <span style={{ color: '#94A3B8', fontSize: '16px', fontWeight: 400 }}>
                 {quoteData.context}

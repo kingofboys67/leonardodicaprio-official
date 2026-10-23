@@ -2,10 +2,9 @@
 
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowRight, BookOpen, ExternalLink, Film, Globe2, Heart, Quote, Sparkles, Star } from 'lucide-react';
+import { ArrowRight, BookOpen, ExternalLink, Globe2, Heart, Quote, Sparkles, Star } from 'lucide-react';
 import {
   CARES,
-  HOLLYWOOD_IMPACT,
   LEGACY_ERAS,
   LegacyEra,
   PHILOSOPHY,

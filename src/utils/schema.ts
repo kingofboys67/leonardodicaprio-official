@@ -5,6 +5,19 @@
  */
 
 export const BASE_URL = 'https://leonardodicaprioofficial.com';
+export const SITE_NAME = 'Leonardo DiCaprio Official';
+export const OG_IMAGE_PATH = '/og/leonardo-dicaprio-1200x630.jpg';
+export const OG_IMAGE_URL = `${BASE_URL}${OG_IMAGE_PATH}`;
+export const LOGO_PATH = '/icons/icon-512.png';
+export const LOGO_URL = `${BASE_URL}${LOGO_PATH}`;
+
+/** Turns a root-relative path into an absolute URL on the canonical host. */
+export const absoluteUrl = (value: string) =>
+  value.startsWith('http') ? value : `${BASE_URL}${value.startsWith('/') ? '' : '/'}${value}`;
+
+/** Primary portrait used for the Person entity (868x850, crawlable JPEG). */
+export const PORTRAIT_URL = `${BASE_URL}/photos/leo_portrait.jpg`;
+
 
 /**
  * Primary Person schema for Leonardo DiCaprio (Wikidata Q38170 entity link).
@@ -42,7 +55,26 @@ export const getPersonSchema = () => {
       'Wildlife Preservation',
     ],
     url: BASE_URL,
-    image: `${BASE_URL}/photos/leo_portrait.jpg`,
+    image: [
+      {
+        '@type': 'ImageObject',
+        url: PORTRAIT_URL,
+        width: 868,
+        height: 850,
+        caption: 'Leonardo DiCaprio portrait',
+      },
+      {
+        '@type': 'ImageObject',
+        url: OG_IMAGE_URL,
+        width: 1200,
+        height: 630,
+        caption: 'Leonardo DiCaprio official digital archive',
+      },
+    ],
+    nationality: {
+      '@type': 'Country',
+      name: 'United States',
+    },
     sameAs: [
       'https://en.wikipedia.org/wiki/Leonardo_DiCaprio',
       'https://www.wikidata.org/wiki/Q38170',
@@ -86,18 +118,35 @@ export const getOrganizationSchema = () => {
     '@context': 'https://schema.org',
     '@type': 'Organization',
     '@id': `${BASE_URL}/#organization`,
-    name: 'Leonardo DiCaprio Official',
+    name: SITE_NAME,
+    alternateName: ['Leonardo DiCaprio Official Website'],
+    description:
+      'Official digital archive and website documenting the filmography, career honors, and conservation work of Leonardo DiCaprio.',
     url: BASE_URL,
-    logo: `${BASE_URL}/assets/email/logo.png`,
+    logo: {
+      '@type': 'ImageObject',
+      url: LOGO_URL,
+      width: 512,
+      height: 512,
+      caption: 'Leonardo DiCaprio Official monogram',
+    },
+    image: LOGO_URL,
     email: 'management@leonardodicaprioofficial.com',
+    contactPoint: [
+      {
+        '@type': 'ContactPoint',
+        contactType: 'customer support',
+        email: 'management@leonardodicaprioofficial.com',
+        url: `${BASE_URL}/fan-club`,
+        availableLanguage: ['English'],
+      },
+    ],
     founder: {
       '@id': `${BASE_URL}/#person`,
     },
-    sameAs: [
-      'https://www.instagram.com/leonardodicaprio/',
-      'https://x.com/LeoDiCaprio',
-      'https://www.facebook.com/LeonardoDiCaprio',
-    ],
+    // Intentionally no sameAs here: the brand entity must not be merged with the
+    // Person entity through Leonardo DiCaprio's personal social profiles. Add the
+    // site's own verified profiles here once they exist.
   };
 };
 
@@ -117,6 +166,9 @@ export const getWebSiteSchema = () => {
     publisher: {
       '@id': `${BASE_URL}/#organization`,
     },
+    about: {
+      '@id': `${BASE_URL}/#person`,
+    },
     inLanguage: 'en-US',
     potentialAction: {
       '@type': 'SearchAction',
@@ -130,23 +182,72 @@ export const getWebSiteSchema = () => {
 };
 
 /**
- * ProfilePage schema identifying the Bio / Legacy page.
+ * WebPage schema for any route. `type` lets each page describe itself accurately
+ * (CollectionPage, AboutPage, ProfilePage, …) while reusing the global entities.
  */
-export const getProfilePageSchema = (path: string = '/legacy') => {
-  const canonicalUrl = `${BASE_URL}${path}`;
-  return {
+export interface WebPageSchemaOptions {
+  path: string;
+  name: string;
+  description?: string;
+  type?: 'WebPage' | 'ProfilePage' | 'CollectionPage' | 'AboutPage' | 'ItemPage' | 'ImageGallery' | 'VideoGallery';
+  image?: string;
+  imageWidth?: number;
+  imageHeight?: number;
+  dateModified?: string;
+  breadcrumb?: BreadcrumbItem[];
+}
+
+export const getWebPageSchema = (options: WebPageSchemaOptions) => {
+  const canonicalUrl = `${BASE_URL}${options.path.startsWith('/') ? options.path : `/${options.path}`}`;
+  const image = options.image ? absoluteUrl(options.image) : OG_IMAGE_URL;
+
+  const schema: Record<string, unknown> = {
     '@context': 'https://schema.org',
-    '@type': 'ProfilePage',
+    '@type': options.type || 'WebPage',
     '@id': `${canonicalUrl}#webpage`,
     url: canonicalUrl,
-    name: 'Leonardo DiCaprio | Biography, Career Legacy & Official Archive',
-    description:
-      'The comprehensive biography of Leonardo DiCaprio: 30+ year cinematic career, Academy Award triumphs, Martin Scorsese collaborations, and global conservation leadership.',
+    name: options.name,
+    description: options.description,
     isPartOf: {
       '@id': `${BASE_URL}/#website`,
     },
-    mainEntity: getPersonSchema(),
+    about: {
+      '@id': `${BASE_URL}/#person`,
+    },
+    primaryImageOfPage: {
+      '@type': 'ImageObject',
+      url: image,
+      width: options.imageWidth || 1200,
+      height: options.imageHeight || 630,
+    },
+    inLanguage: 'en-US',
+    dateModified: options.dateModified || '2026-10-22',
   };
+
+  if (options.type === 'ProfilePage') {
+    schema.mainEntity = { '@id': `${BASE_URL}/#person` };
+  }
+
+  if (options.breadcrumb && options.breadcrumb.length > 0) {
+    schema.breadcrumb = getBreadcrumbSchema(options.breadcrumb);
+  }
+
+  return schema;
+};
+
+/**
+ * ProfilePage schema identifying the Bio / Legacy page.
+ */
+export const getProfilePageSchema = (path: string = '/legacy') => {
+  return getWebPageSchema({
+    path,
+    name: 'Leonardo DiCaprio | Biography, Career Legacy & Official Archive',
+    description:
+      'The comprehensive biography of Leonardo DiCaprio: 30+ year cinematic career, Academy Award triumphs, Martin Scorsese collaborations, and global conservation leadership.',
+    type: 'ProfilePage',
+    image: '/og/leonardo-dicaprio-1200x630.jpg',
+    breadcrumb: [{ name: 'Legacy & Biography', path }],
+  });
 };
 
 /**
@@ -166,6 +267,49 @@ export interface MovieSchemaOptions {
   trailerYoutubeId?: string | null;
 }
 
+/**
+ * Normalizes the loose release strings used in the film data ("12/19/1997 (US)",
+ * "1997", "1997-12-19") to schema.org's required ISO 8601 date.
+ */
+const toIsoDate = (value?: string | null, fallbackYear?: number): string | undefined => {
+  if (value) {
+    const iso = value.match(/^(\d{4})-(\d{2})-(\d{2})/);
+    if (iso) return `${iso[1]}-${iso[2]}-${iso[3]}`;
+
+    const us = value.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})/);
+    if (us) {
+      const month = us[1].padStart(2, '0');
+      const day = us[2].padStart(2, '0');
+      return `${us[3]}-${month}-${day}`;
+    }
+
+    const yearOnly = value.match(/(\d{4})/);
+    if (yearOnly) return `${yearOnly[1]}-01-01`;
+  }
+
+  return fallbackYear ? `${fallbackYear}-01-01` : undefined;
+};
+
+/** Converts "3h 14m", "2:30" or "128 min" into an ISO 8601 duration (PT3H14M). */
+const toIsoDuration = (value?: string | null): string | undefined => {
+  if (!value) return undefined;
+  if (/^P/.test(value)) return value;
+
+  const hours = value.match(/(\d+)\s*h/i);
+  const minutes = value.match(/(\d+)\s*m(?!s)/i);
+  if (hours || minutes) {
+    return `PT${hours ? `${hours[1]}H` : ''}${minutes ? `${minutes[1]}M` : ''}`;
+  }
+
+  const minutesOnly = value.match(/^(\d+)\s*min/i);
+  if (minutesOnly) return `PT${minutesOnly[1]}M`;
+
+  const clock = value.match(/^(\d+):(\d{2})$/);
+  if (clock) return `PT${clock[1]}M${clock[2]}S`;
+
+  return undefined;
+};
+
 export const getMovieSchema = (options: MovieSchemaOptions) => {
   const canonicalUrl = `${BASE_URL}/film/${options.id}`;
   const posterUrl = options.image
@@ -180,8 +324,8 @@ export const getMovieSchema = (options: MovieSchemaOptions) => {
     '@id': `${canonicalUrl}#movie`,
     url: canonicalUrl,
     name: options.title,
-    datePublished: options.releaseDate || `${options.year}-01-01`,
-    dateCreated: String(options.year),
+    datePublished: toIsoDate(options.releaseDate, options.year),
+    dateCreated: `${options.year}-01-01`,
     description: options.synopsis || `Leonardo DiCaprio stars as ${options.role} in ${options.title} (${options.year}), directed by ${options.director}.`,
     genre: options.genres || ['Drama'],
     image: posterUrl,
@@ -191,18 +335,17 @@ export const getMovieSchema = (options: MovieSchemaOptions) => {
     },
     actor: [
       {
-        '@type': 'PerformanceRole',
-        actor: {
-          '@id': `${BASE_URL}/#person`,
-          name: 'Leonardo DiCaprio',
-        },
-        characterName: options.role,
+        '@type': 'Person',
+        '@id': `${BASE_URL}/#person`,
+        name: 'Leonardo DiCaprio',
+        url: BASE_URL,
       },
     ],
   };
 
   if (options.duration) {
-    schema.duration = options.duration;
+    const isoDuration = toIsoDuration(options.duration);
+    if (isoDuration) schema.duration = isoDuration;
   }
 
   if (options.trailerYoutubeId) {

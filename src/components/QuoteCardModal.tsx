@@ -52,22 +52,6 @@ export const QuoteCardModal: React.FC<QuoteCardModalProps> = ({ isOpen, onClose,
     window.open(tweetUrl, '_blank', 'noopener,noreferrer');
   };
 
-  const handleNativeShare = async () => {
-    if (typeof navigator !== 'undefined' && navigator.share) {
-      try {
-        await navigator.share({
-          title: 'Leonardo DiCaprio Quote Card',
-          text: shareText,
-          url: shareUrl,
-        });
-      } catch (e) {
-        // User cancelled or share failed
-      }
-    } else {
-      handleCopyText();
-    }
-  };
-
   return (
     <div
       role="dialog"

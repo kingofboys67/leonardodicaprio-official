@@ -2,11 +2,8 @@
 
 import React, { useState } from 'react';
 import {
-  Film,
-  Award,
   Clapperboard,
   Star,
-  Sparkles,
   Play,
   Info,
   Flame,

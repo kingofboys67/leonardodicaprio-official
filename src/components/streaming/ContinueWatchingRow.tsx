@@ -1,5 +1,5 @@
 import React from 'react';
-import { Play, Clock, X, RotateCcw } from 'lucide-react';
+import { Play, Clock, RotateCcw } from 'lucide-react';
 import { Movie } from '../../data/content';
 
 interface ContinueWatchingRowProps {
@@ -11,7 +11,6 @@ interface ContinueWatchingRowProps {
 export const ContinueWatchingRow: React.FC<ContinueWatchingRowProps> = ({
   movies,
   onPlayMovie,
-  onOpenDetail,
 }) => {
   const continueItems = movies.filter((m) => m.continueWatching);
 

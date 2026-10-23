@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowUp, ExternalLink, Film, ShieldCheck, Mail, CheckCircle } from 'lucide-react';
+import { ArrowUp, ExternalLink, Film, ShieldCheck, Mail } from 'lucide-react';
 import { MANAGEMENT_EMAIL } from '../config/site';
 import { submitForm } from '../lib/submitForm';
 

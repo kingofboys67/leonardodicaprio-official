@@ -17,7 +17,8 @@ dist-ssr/
 # Editor & OS files
 .DS_Store
 Thumbs.db
-.vscode/
+.vscode/*
+!.vscode/settings.json
 .idea/
 
 # Root-level raw downloads and media clips (keep public/ and src/ assets intact)
@@ -32,3 +33,4 @@ out/
 
 # Local audit output
 scripts/*.json
+tsconfig.tsbuildinfo

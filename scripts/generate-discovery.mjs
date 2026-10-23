@@ -7,7 +7,10 @@ const __dirname = path.dirname(__filename);
 const root = path.resolve(__dirname, '..');
 
 const BASE_URL = 'https://leonardodicaprioofficial.com';
-const TODAY = '2026-10-13';
+// Regenerated on every build, so <lastmod> reflects the deploy date instead of a stale constant.
+const BUILD_DATE = new Date();
+const TODAY = BUILD_DATE.toISOString().split('T')[0];
+const RSS_DATE = BUILD_DATE.toUTCString();
 const INDEXNOW_KEY = '4fa92e624c964177b94101e4a13d712e';
 
 // Core routes
@@ -185,7 +188,7 @@ const rssXml = `<?xml version="1.0" encoding="UTF-8"?>
     <link>${BASE_URL}</link>
     <description>Official updates on new feature films, festival premieres, Re:wild conservation summits, and historic acceptance speeches.</description>
     <language>en-us</language>
-    <lastBuildDate>Tue, 13 Oct 2026 12:00:00 GMT</lastBuildDate>
+    <lastBuildDate>${RSS_DATE}</lastBuildDate>
     <atom:link href="${BASE_URL}/feed.xml" rel="self" type="application/rss+xml" />
 
     <item>

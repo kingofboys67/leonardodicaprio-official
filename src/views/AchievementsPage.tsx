@@ -4,21 +4,10 @@ import React from 'react';
 import { Trophy } from 'lucide-react';
 import { DarkBackdrop } from '../components/DarkBackdrop';
 import { AchievementsStory } from '../components/AchievementsStory';
-import { SEOHead } from '../components/SEOHead';
-import { getBreadcrumbSchema, getProfilePageSchema } from '../utils/schema';
 
 export const AchievementsPage: React.FC = () => {
-  const profilePage = getProfilePageSchema('/achievements');
-  const breadcrumbs = getBreadcrumbSchema([{ name: 'Achievements & Honors', path: '/achievements' }]);
-
   return (
     <div className="min-h-screen">
-      <SEOHead
-        title="Achievements & Honors | Leonardo DiCaprio Official"
-        description="Explore Leonardo DiCaprio's Academy Awards, BAFTA, Golden Globe wins, UN Messenger of Peace honors, global environmental awards, and lifetime acclaim."
-        type="profile"
-        jsonLd={[profilePage, breadcrumbs]}
-      />
       {/* The backdrop starts below the navigation bar so the bar keeps its own colour */}
       <div className="relative mt-20 overflow-hidden dark-scope">
         <DarkBackdrop image="/assets/portraits/portrait-2008.jpg" side="left" position="50% 12%">

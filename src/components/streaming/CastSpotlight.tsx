@@ -1,6 +1,6 @@
 import React from 'react';
-import { Users, Award, Film } from 'lucide-react';
-import { TOP_COLLABORATORS, Collaborator } from '../../data/content';
+import { Users } from 'lucide-react';
+import { TOP_COLLABORATORS } from '../../data/content';
 
 interface CastSpotlightProps {
   onSelectCollaborator: (collaboratorName: string) => void;

@@ -199,7 +199,7 @@ const fanAlert = (d: Fields) =>
 
 /* ---- Newsletter ---- */
 
-const newsWelcome = (d: Fields) =>
+const newsWelcome = () =>
   layout({
     preheader: 'You are signed up to the Official Dispatch newsletter.',
     banner: true,
@@ -298,7 +298,7 @@ export const buildEmails = (type: FormType, d: Fields) => {
   }
   if (type === 'newsletter') {
     return {
-      welcome: { subject: 'You are on the list: The Official Dispatch', html: newsWelcome(d) },
+      welcome: { subject: 'You are on the list: The Official Dispatch', html: newsWelcome() },
       alert: { to: MANAGEMENT_EMAIL, subject: `New newsletter sign-up: ${d.email}`, html: newsAlert(d) },
     };
   }

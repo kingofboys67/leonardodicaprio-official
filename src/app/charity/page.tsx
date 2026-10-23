@@ -1,7 +1,6 @@
 import type { Metadata } from 'next';
-import React from 'react';
 import { CharityPage } from '../../views/CharityPage';
-import { getProfilePageSchema, getBreadcrumbSchema, BASE_URL } from '../../utils/schema';
+import { getWebPageSchema, getBreadcrumbSchema, BASE_URL } from '../../utils/schema';
 
 export const metadata: Metadata = {
   title: 'Re:wild & Conservation | Leonardo DiCaprio',
@@ -16,7 +15,7 @@ export const metadata: Metadata = {
       'Leonardo DiCaprio\'s global environmental activism: over $100M in grants, Re:wild partnerships, and frontline biodiversity conservation initiatives.',
     url: `${BASE_URL}/charity`,
     siteName: 'Leonardo DiCaprio Official',
-    images: [{ url: '/photos/leo_portrait.jpg', width: 1200, height: 630, alt: 'Leonardo DiCaprio Conservation' }],
+    images: [{ url: '/og/leonardo-dicaprio-1200x630.jpg', width: 1200, height: 630, alt: 'Leonardo DiCaprio Conservation' }],
     type: 'website',
   },
   twitter: {
@@ -24,12 +23,19 @@ export const metadata: Metadata = {
     title: 'Re:wild & Conservation | Leonardo DiCaprio',
     description:
       'Leonardo DiCaprio\'s global environmental activism: over $100M in grants, Re:wild partnerships, and frontline biodiversity conservation initiatives.',
-    images: ['/photos/leo_portrait.jpg'],
+    images: ['/og/leonardo-dicaprio-1200x630.jpg'],
   },
 };
 
 export default function CharityRoute() {
-  const profileSchema = getProfilePageSchema('/charity');
+  const pageSchema = getWebPageSchema({
+    path: '/charity',
+    name: 'Re:wild & Conservation | Leonardo DiCaprio',
+    description:
+      "Leonardo DiCaprio's global environmental activism: over $100M in grants, Re:wild partnerships, and frontline biodiversity conservation initiatives.",
+    type: 'AboutPage',
+    image: '/og/leonardo-dicaprio-1200x630.jpg',
+  });
   const breadcrumbsSchema = getBreadcrumbSchema([
     { name: 'Conservation & Charity', path: '/charity' },
   ]);
@@ -39,7 +45,7 @@ export default function CharityRoute() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify([profileSchema, breadcrumbsSchema]),
+          __html: JSON.stringify([pageSchema, breadcrumbsSchema]),
         }}
       />
       <CharityPage />

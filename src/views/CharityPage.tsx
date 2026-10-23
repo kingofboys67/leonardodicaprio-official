@@ -1,8 +1,6 @@
 'use client';
 
 import React, { useEffect, useRef, useState } from 'react';
-import { SEOHead } from '../components/SEOHead';
-import { getBreadcrumbSchema, getProfilePageSchema } from '../utils/schema';
 import { Link } from 'react-router-dom';
 import confetti from 'canvas-confetti';
 import { ArrowDown, CheckCircle2, Globe2, HandHeart, Heart, Mail, Sparkles, Volume2, VolumeX } from 'lucide-react';
@@ -76,17 +74,8 @@ export const CharityPage: React.FC = () => {
 
   const scrollTo = (id: string) => document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
 
-  const profilePage = getProfilePageSchema('/charity');
-  const breadcrumbs = getBreadcrumbSchema([{ name: 'Charity & Conservation', path: '/charity' }]);
-
   return (
     <div className="min-h-screen dark-scope bg-[#07090f]">
-      <SEOHead
-        title="Charity & Conservation | Leonardo DiCaprio Official"
-        description="Leonardo DiCaprio's global environmental work with Re:wild, Earth Alliance, and the Leonardo DiCaprio Foundation protecting biodiversity, oceans, and indigenous lands."
-        type="profile"
-        jsonLd={[profilePage, breadcrumbs]}
-      />
       {/* Hero with looping footage */}
       <div className="relative mt-20 h-[78vh] min-h-[520px] overflow-hidden">
         <video

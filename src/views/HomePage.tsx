@@ -1,9 +1,8 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import {
-  Sparkles,
   Film,
   Camera,
   Video,
@@ -12,10 +11,6 @@ import {
   Users,
   ArrowRight,
   Play,
-  Award,
-  Globe2,
-  Calendar,
-  ExternalLink,
 } from 'lucide-react';
 import { HeroSection } from '../components/official/HeroSection';
 import {
@@ -24,12 +19,9 @@ import {
   GALLERY_PHOTOS,
   REELS_DATA,
   ACHIEVEMENTS_DATA,
-  IMPACT_METRICS,
 } from '../data/content';
 import { PlanetarySection } from '../components/PlanetarySection';
 import { useApp } from '../context/AppContext';
-import { SEOHead } from '../components/SEOHead';
-import { getProfilePageSchema } from '../utils/schema';
 
 // Films shown in Featured Masterworks, in display order.
 // Covers are read from /assets/posters/<id>.jpg (portrait 2:3); until a cover
@@ -131,11 +123,6 @@ export const HomePage: React.FC = () => {
 
   return (
     <div className="min-h-screen">
-      <SEOHead
-        title="Leonardo DiCaprio | Official Website"
-        description="The official portal of Academy Award-winning actor, UN Messenger of Peace, and environmental activist Leonardo DiCaprio."
-        jsonLd={getProfilePageSchema('/')}
-      />
       {/* 1. Hero Cinema Showcase */}
       <HeroSection
         movies={MOVIES_DATA}

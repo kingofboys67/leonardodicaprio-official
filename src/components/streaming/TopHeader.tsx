@@ -4,13 +4,10 @@ import {
   Bell,
   Bookmark,
   Sparkles,
-  SlidersHorizontal,
   X,
   Volume2,
   VolumeX,
   Menu,
-  Film,
-  CheckCircle2,
 } from 'lucide-react';
 import { STREAM_GENRES } from '../../data/content';
 

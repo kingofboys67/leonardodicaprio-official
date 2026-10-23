@@ -1,12 +1,11 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
-import React from 'react';
-import { Calendar } from 'lucide-react';
 import { FILMOGRAPHY } from '../../../data/filmography';
 import { MOVIES_DATA } from '../../../data/content';
 import { FilmPage } from '../../../views/FilmPage';
 import {
   getMovieSchema,
+  getWebPageSchema,
   getBreadcrumbSchema,
   BASE_URL,
 } from '../../../utils/schema';
@@ -26,13 +25,11 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const film = FILMOGRAPHY.find((f) => f.id === id);
   if (!film) return { title: 'Film Not Found' };
 
-  const rawTitle = `${film.title} (${film.year}) | Leo DiCaprio`;
-  const title = rawTitle.length > 60 ? `${film.title.slice(0, 33)} (${film.year}) | Leo` : rawTitle;
+  const fullTitle = `${film.title} (${film.year}) | Leonardo DiCaprio`;
+  const title = fullTitle.length > 62 ? `${film.title} (${film.year})` : fullTitle;
 
   const rawDesc = `${film.title} (${film.year}), directed by ${film.director}. Leonardo DiCaprio stars as ${film.role}. Synopsis, cast, and trailer archive.`;
   const description = rawDesc.length > 155 ? `${rawDesc.slice(0, 151)}...` : rawDesc;
-
-  const poster = film.poster || `/assets/posters/${film.id}.jpg`;
 
   return {
     title,
@@ -47,7 +44,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       type: 'video.movie',
       images: [
         {
-          url: poster,
+          url: '/og/leonardo-dicaprio-1200x630.jpg',
           width: 1200,
           height: 630,
           alt: `${film.title} starring Leonardo DiCaprio`,
@@ -58,7 +55,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       card: 'summary_large_image',
       title,
       description,
-      images: [poster],
+      images: ['/og/leonardo-dicaprio-1200x630.jpg'],
     },
   };
 }
@@ -88,12 +85,22 @@ export default async function FilmRoutePage({ params }: PageProps) {
     { name: `${film.title} (${film.year})`, path: `/film/${film.id}` },
   ]);
 
+  const pageSchema = getWebPageSchema({
+    path: `/film/${film.id}`,
+    name: `${film.title} (${film.year})`,
+    description: `Synopsis, cast, awards, and trailer for ${film.title} (${film.year}), directed by ${film.director}.`,
+    type: 'ItemPage',
+    image: film.poster || `/assets/posters/${film.id}.jpg`,
+    imageWidth: 533,
+    imageHeight: 800,
+  });
+
   return (
     <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify([movieSchema, breadcrumbsSchema]),
+          __html: JSON.stringify([pageSchema, movieSchema, breadcrumbsSchema]),
         }}
       />
       {/* Hidden semantic summary for crawlers and AI parsing directly in the HTML */}

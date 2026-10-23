@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Globe, Play, ExternalLink, Shield, Leaf, Heart, Eye } from 'lucide-react';
+import { Globe, Play, ExternalLink } from 'lucide-react';
 import { CHARITY_PROJECTS, REELS_DATA, IMPACT_METRICS, ReelItem } from '../../data/content';
 
 interface DocuStreamSectionProps {

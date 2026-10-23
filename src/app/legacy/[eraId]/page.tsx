@@ -1,10 +1,9 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
-import React from 'react';
 import { ArrowLeft, Calendar, Sparkles } from 'lucide-react';
 import { Link } from '../../../navigation';
 import { LEGACY_ERAS } from '../../../data/legacy';
-import { getBreadcrumbSchema, BASE_URL } from '../../../utils/schema';
+import { getWebPageSchema, getBreadcrumbSchema, BASE_URL } from '../../../utils/schema';
 
 interface PageProps {
   params: Promise<{ eraId: string }>;
@@ -21,11 +20,10 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const era = LEGACY_ERAS.find((e) => e.id === eraId);
   if (!era) return { title: 'Career Period Not Found' };
 
-  const shortTitle = era.title.length > 25 ? `${era.title.slice(0, 22)}...` : era.title;
-  const title = `${shortTitle} (${era.years}) | Leo DiCaprio`;
-  const rawDesc = era.summary;
-  const description = rawDesc.length > 135 ? `${rawDesc.slice(0, 132)}...` : rawDesc;
-  const img = era.images[0]?.src || '/photos/leo_portrait.jpg';
+  const fullTitle = `${era.title} (${era.years}) | Leonardo DiCaprio`;
+  const title = fullTitle.length > 62 ? `${era.title} (${era.years})` : fullTitle;
+  const rawDesc = `${era.summary} Explore the ${era.years} chapter of Leonardo DiCaprio's career, key films, awards, and milestones.`;
+  const description = rawDesc.length > 150 ? `${rawDesc.slice(0, 147).trimEnd()}...` : rawDesc;
 
   return {
     title,
@@ -38,14 +36,21 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       description,
       url: `${BASE_URL}/legacy/${eraId}`,
       siteName: 'Leonardo DiCaprio Official',
-      images: [{ url: img, width: 1200, height: 630, alt: `${era.title} (${era.years})` }],
+      images: [
+        {
+          url: '/og/leonardo-dicaprio-1200x630.jpg',
+          width: 1200,
+          height: 630,
+          alt: `${era.title} (${era.years})`,
+        },
+      ],
       type: 'article',
     },
     twitter: {
       card: 'summary_large_image',
       title,
       description,
-      images: [img],
+      images: ['/og/leonardo-dicaprio-1200x630.jpg'],
     },
   };
 }
@@ -60,11 +65,19 @@ export default async function EraPage({ params }: PageProps) {
     { name: `${era.title} (${era.years})`, path: `/legacy/${era.id}` },
   ]);
 
+  const pageSchema = getWebPageSchema({
+    path: `/legacy/${era.id}`,
+    name: `${era.title} (${era.years})`,
+    description: era.summary,
+    type: 'ItemPage',
+    image: '/og/leonardo-dicaprio-1200x630.jpg',
+  });
+
   return (
     <article className="min-h-screen pt-24 pb-16">
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbsSchema) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify([pageSchema, breadcrumbsSchema]) }}
       />
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
         <Link

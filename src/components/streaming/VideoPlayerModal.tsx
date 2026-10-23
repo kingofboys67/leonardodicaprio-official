@@ -11,9 +11,6 @@ import {
   Maximize,
   Minimize,
   X,
-  Settings,
-  Sparkles,
-  Subtitles,
   Check,
 } from 'lucide-react';
 
@@ -45,7 +42,7 @@ export const VideoPlayerModal: React.FC<VideoPlayerModalProps> = ({
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [showControls, setShowControls] = useState(true);
   const [playbackSpeed, setPlaybackSpeed] = useState(1);
-  const [selectedQuality, setSelectedQuality] = useState(quality);
+  const [selectedQuality] = useState(quality);
   const [isSpeedOpen, setIsSpeedOpen] = useState(false);
 
   const hideTimerRef = useRef<number | null>(null);

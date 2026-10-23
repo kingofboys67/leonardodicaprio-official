@@ -1,4 +1,4 @@
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 import React from 'react';
 import { Inter, Cinzel, Playfair_Display } from 'next/font/google';
 import '../index.css';
@@ -78,7 +78,7 @@ export const metadata: Metadata = {
     siteName: 'Leonardo DiCaprio Official',
     images: [
       {
-        url: '/photos/leo_hero.jpg',
+        url: '/og/leonardo-dicaprio-1200x630.jpg',
         width: 1200,
         height: 630,
         alt: 'Leonardo DiCaprio Official',
@@ -94,7 +94,7 @@ export const metadata: Metadata = {
       'The official digital archive and website of Academy Award-winning actor, UN Messenger of Peace, and environmental activist Leonardo DiCaprio.',
     site: '@LeoDiCaprio',
     creator: '@LeoDiCaprio',
-    images: ['/photos/leo_hero.jpg'],
+    images: ['/og/leonardo-dicaprio-1200x630.jpg'],
   },
   robots: {
     index: true,
@@ -108,15 +108,41 @@ export const metadata: Metadata = {
     },
   },
   icons: {
-    icon: "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎬</text></svg>",
+    icon: [
+      { url: '/favicon.ico', sizes: '16x16 32x32 48x48', type: 'image/x-icon' },
+      { url: '/icons/icon-48.png', sizes: '48x48', type: 'image/png' },
+      { url: '/icons/icon-192.png', sizes: '192x192', type: 'image/png' },
+      { url: '/icons/icon-512.png', sizes: '512x512', type: 'image/png' },
+    ],
+    shortcut: '/favicon.ico',
+    apple: [{ url: '/icons/apple-touch-icon.png', sizes: '180x180', type: 'image/png' }],
   },
   manifest: '/site.webmanifest',
+  appleWebApp: {
+    capable: true,
+    title: 'Leonardo DiCaprio',
+    statusBarStyle: 'black-translucent',
+  },
+  category: 'entertainment',
   verification: {
-    google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION || 'google-site-verification',
+    // Only emitted when a real Search Console token is configured; never a placeholder.
+    ...(process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION
+      ? { google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION }
+      : {}),
     other: {
-      'msvalidate.01': [process.env.NEXT_PUBLIC_BING_VERIFICATION || '4FA92E624C964177B94101E4A13D712E'],
+      'msvalidate.01': process.env.NEXT_PUBLIC_BING_VERIFICATION || '4FA92E624C964177B94101E4A13D712E',
     },
   },
+};
+
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  themeColor: [
+    { media: '(prefers-color-scheme: dark)', color: '#0c101c' },
+    { media: '(prefers-color-scheme: light)', color: '#ffffff' },
+  ],
+  colorScheme: 'dark light',
 };
 
 export default function RootLayout({
@@ -144,6 +170,8 @@ export default function RootLayout({
           title="Leonardo DiCaprio Official Dispatch & Cinema News"
           href="/feed.xml"
         />
+        <link rel="alternate" type="text/plain" title="LLM context for Leonardo DiCaprio Official" href="/llms.txt" />
+        <link rel="sitemap" type="application/xml" title="Sitemap" href="/sitemap.xml" />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{

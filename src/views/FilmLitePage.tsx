@@ -6,8 +6,6 @@ import { ArrowLeft, ArrowRight, Calendar, Clock, Film, Play, Star, X, ChevronLef
 import { FILMOGRAPHY, FilmographyEntry } from '../data/filmography';
 import { FILM_WHY } from '../data/filmWhy';
 import { useApp } from '../context/AppContext';
-import { SEOHead } from '../components/SEOHead';
-import { getMovieSchema, getBreadcrumbSchema } from '../utils/schema';
 
 const KIND_LABEL: Record<FilmographyEntry['kind'], string> = { film: 'Film', series: 'TV series', documentary: 'Documentary' };
 
@@ -58,31 +56,8 @@ export const FilmLitePage: React.FC<{ entry: FilmographyEntry }> = ({ entry }) =
     { icon: entry.kind === 'series' ? Tv : Film, label: 'Type', value: KIND_LABEL[entry.kind] },
   ].filter(Boolean) as { icon: React.ComponentType<{ className?: string }>; label: string; value: string }[];
 
-  const movieSchema = getMovieSchema({
-    id: entry.id,
-    title: entry.title,
-    year: entry.year,
-    director: entry.director,
-    role: entry.role,
-    synopsis: entry.synopsis,
-    genres: entry.genres,
-    duration: entry.runtime || undefined,
-    image: entry.poster || undefined,
-  });
-
-  const breadcrumbSchema = getBreadcrumbSchema([
-    { name: 'Filmography', path: '/filmography' },
-    { name: entry.title, path: `/film/${entry.id}` },
-  ]);
-
   return (
     <div className="min-h-screen pt-24 sm:pt-28 pb-20">
-      <SEOHead
-        title={`${entry.title} (${entry.year}) | Leonardo DiCaprio Official`}
-        description={`${entry.title} (${entry.year}) — Leonardo DiCaprio as ${entry.role}. ${entry.synopsis}`}
-        type="video.other"
-        jsonLd={[movieSchema, breadcrumbSchema]}
-      />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <Link to="/filmography" className="inline-flex items-center gap-2 text-xs sm:text-sm font-bold text-[#F28C28] hover:text-amber-500 mb-6">
           <ArrowLeft className="w-4 h-4" />

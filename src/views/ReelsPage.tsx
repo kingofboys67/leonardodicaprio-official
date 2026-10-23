@@ -4,22 +4,12 @@ import React from 'react';
 import { Video } from 'lucide-react';
 import { ReelsBackdrop, ReelsSection } from '../components/ReelsSection';
 import { useApp } from '../context/AppContext';
-import { SEOHead } from '../components/SEOHead';
-import { getBreadcrumbSchema, getProfilePageSchema } from '../utils/schema';
 
 export const ReelsPage: React.FC = () => {
   const { playReel } = useApp();
-  const profilePage = getProfilePageSchema('/reels');
-  const breadcrumbs = getBreadcrumbSchema([{ name: 'Video Reels', path: '/reels' }]);
 
   return (
     <div className="min-h-screen">
-      <SEOHead
-        title="Video Reels | Leonardo DiCaprio Official"
-        description="Watch exclusive video reels of Leonardo DiCaprio: Oscar acceptance speeches, Cannes red carpet moments, film trailers, behind the scenes, and fan interactions."
-        type="video.other"
-        jsonLd={[profilePage, breadcrumbs]}
-      />
       {/* The backdrop starts below the navigation bar so the bar keeps its own colour */}
       <div className="relative mt-20 overflow-hidden">
         <ReelsBackdrop />

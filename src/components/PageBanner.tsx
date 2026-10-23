@@ -1,9 +1,6 @@
 'use client';
 
 import React from 'react';
-import { useLocation } from 'react-router-dom';
-import { SEOHead } from './SEOHead';
-import { getBreadcrumbSchema, getProfilePageSchema } from '../utils/schema';
 
 interface PageBannerProps {
   badge: string;
@@ -11,8 +8,6 @@ interface PageBannerProps {
   title: string;
   highlightWord?: string;
   description: string;
-  metaTitle: string;
-  metaDescription: string;
   bgGradient?: string;
 }
 
@@ -22,22 +17,10 @@ export const PageBanner: React.FC<PageBannerProps> = ({
   title,
   highlightWord,
   description,
-  metaTitle,
-  metaDescription,
   bgGradient = 'from-amber-500/10 via-[#F28C28]/5 to-transparent',
 }) => {
-  const location = useLocation();
-  const breadcrumbs = getBreadcrumbSchema([{ name: badge, path: location.pathname }]);
-  const profilePage = getProfilePageSchema(location.pathname);
-
   return (
     <div className="relative pt-32 pb-16 sm:pt-40 sm:pb-20 overflow-hidden border-b border-[var(--border)]">
-      <SEOHead
-        title={metaTitle}
-        description={metaDescription}
-        type="profile"
-        jsonLd={[profilePage, breadcrumbs]}
-      />
       {/* Background ambient lighting */}
       <div
         className={`absolute inset-0 bg-gradient-to-b ${bgGradient} pointer-events-none opacity-80`}

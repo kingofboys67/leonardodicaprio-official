@@ -1,8 +1,7 @@
 import type { Metadata } from 'next';
-import React from 'react';
 import { ReelsPage } from '../../views/ReelsPage';
 import { ALL_REELS } from '../../data/content';
-import { getVideoSchema, getBreadcrumbSchema, BASE_URL } from '../../utils/schema';
+import { getVideoSchema, getWebPageSchema, getBreadcrumbSchema, BASE_URL } from '../../utils/schema';
 
 export const metadata: Metadata = {
   title: 'Historic Video Reels | Leonardo DiCaprio',
@@ -17,7 +16,7 @@ export const metadata: Metadata = {
       'Watch historic video reels of Leonardo DiCaprio: Academy Award acceptance speeches, Cannes red carpet moments, and behind-the-scenes cinema clips.',
     url: `${BASE_URL}/reels`,
     siteName: 'Leonardo DiCaprio Official',
-    images: [{ url: '/photos/leo_hero.jpg', width: 1200, height: 630, alt: 'Leonardo DiCaprio Video Reels' }],
+    images: [{ url: '/og/leonardo-dicaprio-1200x630.jpg', width: 1200, height: 630, alt: 'Leonardo DiCaprio Video Reels' }],
     type: 'website',
   },
   twitter: {
@@ -25,11 +24,19 @@ export const metadata: Metadata = {
     title: 'Historic Video Reels | Leonardo DiCaprio',
     description:
       'Watch historic video reels of Leonardo DiCaprio: Academy Award acceptance speeches, Cannes red carpet moments, and behind-the-scenes cinema clips.',
-    images: ['/photos/leo_hero.jpg'],
+    images: ['/og/leonardo-dicaprio-1200x630.jpg'],
   },
 };
 
 export default function ReelsRoute() {
+  const pageSchema = getWebPageSchema({
+    path: '/reels',
+    name: 'Historic Video Reels | Leonardo DiCaprio',
+    description:
+      'Watch historic video reels of Leonardo DiCaprio: Academy Award acceptance speeches, Cannes red carpet moments, and behind-the-scenes cinema clips.',
+    type: 'VideoGallery',
+    image: '/og/leonardo-dicaprio-1200x630.jpg',
+  });
   const breadcrumbsSchema = getBreadcrumbSchema([
     { name: 'Video Reels', path: '/reels' },
   ]);
@@ -55,7 +62,7 @@ export default function ReelsRoute() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify([breadcrumbsSchema, ...videoSchemas]),
+          __html: JSON.stringify([pageSchema, breadcrumbsSchema, ...videoSchemas]),
         }}
       />
       <ReelsPage />

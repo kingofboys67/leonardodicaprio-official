@@ -6,12 +6,9 @@ import {
   Bookmark,
   Check,
   Star,
-  Sparkles,
   ChevronLeft,
   ChevronRight,
   Flame,
-  Volume2,
-  VolumeX,
 } from 'lucide-react';
 import { Movie } from '../../data/content';
 

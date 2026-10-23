@@ -2,11 +2,7 @@
 
 import React, { useState } from 'react';
 import {
-  Image as ImageIcon,
   Maximize2,
-  Calendar,
-  Tag,
-  Sparkles,
   Camera,
 } from 'lucide-react';
 import { GALLERY_PHOTOS, GalleryPhoto } from '../../data/content';

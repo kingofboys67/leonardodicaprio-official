@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { Award, Globe2, Sparkles, Quote, Calendar, ArrowUpRight, Share2 } from 'lucide-react';
+import { Award, Globe2, Sparkles, Quote, Share2 } from 'lucide-react';
 import { FAMOUS_QUOTES } from '../data/content';
 import { useApp } from '../context/AppContext';
 

@@ -27,8 +27,6 @@ import { FILM_STILLS } from '../data/stills';
 import { FILMOGRAPHY } from '../data/filmography';
 import { FilmLitePage } from './FilmLitePage';
 import { useApp } from '../context/AppContext';
-import { SEOHead } from '../components/SEOHead';
-import { getMovieSchema, getBreadcrumbSchema } from '../utils/schema';
 
 const slugify = (n: string) =>
   n
@@ -107,31 +105,8 @@ const FilmDeepPage: React.FC = () => {
     { icon: Star, label: 'Audience rating', value: `${movie.rating} / 10` },
   ];
 
-  const movieSchema = getMovieSchema({
-    id: movie.id,
-    title: movie.title,
-    year: movie.year,
-    director: movie.director,
-    role: movie.role,
-    synopsis: movie.synopsis,
-    genres: movie.genres,
-    duration: movie.duration,
-    image: `/assets/posters/${movie.id}.jpg`,
-  });
-
-  const breadcrumbSchema = getBreadcrumbSchema([
-    { name: 'Filmography', path: '/filmography' },
-    { name: movie.title, path: `/film/${movie.id}` },
-  ]);
-
   return (
     <div className="min-h-screen pt-24 sm:pt-28 pb-20">
-      <SEOHead
-        title={`${movie.title} (${movie.year}) | Leonardo DiCaprio Official`}
-        description={`${movie.title} (${movie.year}) directed by ${movie.director}. Leonardo DiCaprio stars as ${movie.role}. Full story, box office metrics, and behind the scenes.`}
-        type="video.other"
-        jsonLd={[movieSchema, breadcrumbSchema]}
-      />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <Link
           to="/filmography"

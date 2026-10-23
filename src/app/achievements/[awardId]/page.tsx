@@ -1,9 +1,8 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
-import React from 'react';
 import { ArrowLeft, Award, Calendar, CheckCircle2, Trophy } from 'lucide-react';
 import { Link } from '../../../navigation';
-import { getBreadcrumbSchema, BASE_URL } from '../../../utils/schema';
+import { getWebPageSchema, getBreadcrumbSchema, BASE_URL } from '../../../utils/schema';
 
 interface AwardDetail {
   id: string;
@@ -181,10 +180,11 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const award = AWARDS.find((a) => a.id === awardId);
   if (!award) return { title: 'Award Not Found' };
 
-  const rawTitle = `${award.name} | Leo DiCaprio Honors`;
-  const title = rawTitle.length > 60 ? `${award.name.slice(0, 35)} | Leo Honors` : rawTitle;
+  const rawTitle = `${award.name} | Leonardo DiCaprio`;
+  const title = rawTitle.length > 62 ? award.name : rawTitle;
   const rawDesc = award.summary;
-  const description = rawDesc.length > 135 ? `${rawDesc.slice(0, 132)}...` : rawDesc;
+  // Keep the HTML-escaped attribute under 155 chars (apostrophes expand to &#x27;).
+  const description = rawDesc.length > 140 ? `${rawDesc.slice(0, 137).trimEnd()}...` : rawDesc;
 
   return {
     title,
@@ -197,14 +197,21 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       description,
       url: `${BASE_URL}/achievements/${awardId}`,
       siteName: 'Leonardo DiCaprio Official',
-      images: [{ url: '/photos/leo_portrait.jpg', width: 1200, height: 630, alt: `${award.name} Honor` }],
+      images: [
+        {
+          url: '/og/leonardo-dicaprio-1200x630.jpg',
+          width: 1200,
+          height: 630,
+          alt: `${award.name} Honor`,
+        },
+      ],
       type: 'article',
     },
     twitter: {
       card: 'summary_large_image',
       title,
       description,
-      images: ['/photos/leo_portrait.jpg'],
+      images: ['/og/leonardo-dicaprio-1200x630.jpg'],
     },
   };
 }
@@ -219,11 +226,19 @@ export default async function AwardDetailPage({ params }: PageProps) {
     { name: award.name, path: `/achievements/${award.id}` },
   ]);
 
+  const pageSchema = getWebPageSchema({
+    path: `/achievements/${award.id}`,
+    name: award.name,
+    description: award.summary,
+    type: 'ItemPage',
+    image: '/og/leonardo-dicaprio-1200x630.jpg',
+  });
+
   return (
     <article className="min-h-screen pt-24 pb-16">
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbsSchema) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify([pageSchema, breadcrumbsSchema]) }}
       />
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         <Link

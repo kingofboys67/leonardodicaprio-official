@@ -107,18 +107,21 @@
 /* Typography gradients */
 .gold-text-gradient {
   background: linear-gradient(135deg, #F28C28 0%, #d4af37 50%, #ca8a04 100%);
+  background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
 .emerald-text-gradient {
   background: linear-gradient(135deg, #059669 0%, #10b981 50%, #34d399 100%);
+  background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
 .dark .emerald-text-gradient {
   background: linear-gradient(135deg, #a7f3d0 0%, #34d399 50%, #059669 100%);
+  background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }

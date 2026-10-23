@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect } from 'react';
-import NextLink, { LinkProps as NextLinkProps } from 'next/link';
+import NextLink from 'next/link';
 import { usePathname, useRouter, useParams as useNextParams } from 'next/navigation';
 
 export interface LinkProps extends Omit<React.AnchorHTMLAttributes<HTMLAnchorElement>, 'href'> {

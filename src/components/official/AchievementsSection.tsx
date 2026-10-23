@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { Award, Trophy, Star, Globe, TrendingUp, Sparkles, CheckCircle2 } from 'lucide-react';
-import { ACHIEVEMENTS_DATA, Achievement } from '../../data/content';
+import { Award, Trophy } from 'lucide-react';
+import { ACHIEVEMENTS_DATA } from '../../data/content';
 
 export const AchievementsSection: React.FC = () => {
   const [activeFilter, setActiveFilter] = useState<string>('All');

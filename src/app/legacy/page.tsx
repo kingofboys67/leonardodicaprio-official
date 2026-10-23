@@ -1,5 +1,4 @@
 import type { Metadata } from 'next';
-import React from 'react';
 import { Sparkles, Calendar } from 'lucide-react';
 import { PageBanner } from '../../components/PageBanner';
 import { LegacyStory } from '../../components/LegacyStory';
@@ -8,7 +7,6 @@ import { FAQSection } from '../../components/FAQSection';
 import { LEO_FAQS } from '../../data/faq';
 import {
   getProfilePageSchema,
-  getBreadcrumbSchema,
   getFAQSchema,
   BASE_URL,
 } from '../../utils/schema';
@@ -26,7 +24,7 @@ export const metadata: Metadata = {
       'Comprehensive biography and career legacy of Academy Award-winner Leonardo DiCaprio: his 30+ year screen journey, Scorsese partnership, and conservation.',
     url: `${BASE_URL}/legacy`,
     siteName: 'Leonardo DiCaprio Official',
-    images: [{ url: '/photos/leo_portrait.jpg', width: 1200, height: 630, alt: 'Leonardo DiCaprio Biography' }],
+    images: [{ url: '/og/leonardo-dicaprio-1200x630.jpg', width: 1200, height: 630, alt: 'Leonardo DiCaprio Biography' }],
     type: 'profile',
   },
   twitter: {
@@ -34,18 +32,15 @@ export const metadata: Metadata = {
     title: 'Biography & Career Legacy | Leonardo DiCaprio',
     description:
       'Comprehensive biography and career legacy of Academy Award-winner Leonardo DiCaprio: his 30+ year screen journey, Scorsese partnership, and conservation.',
-    images: ['/photos/leo_portrait.jpg'],
+    images: ['/og/leonardo-dicaprio-1200x630.jpg'],
   },
 };
 
 export default function LegacyPage() {
   const profileSchema = getProfilePageSchema('/legacy');
-  const breadcrumbsSchema = getBreadcrumbSchema([
-    { name: 'Legacy & Biography', path: '/legacy' },
-  ]);
   const faqSchema = getFAQSchema(LEO_FAQS);
 
-  const schemas = [profileSchema, breadcrumbsSchema, faqSchema];
+  const schemas = [profileSchema, faqSchema];
 
   return (
     <div className="min-h-screen">
@@ -59,8 +54,6 @@ export default function LegacyPage() {
         title="His Life, His Work, His Legacy"
         highlightWord="Legacy"
         description="Where he came from, how he became who he is, what he gave to cinema, what he believes, and what he will be remembered for."
-        metaTitle="Legacy & Biography | Leonardo DiCaprio Official"
-        metaDescription="Explore Leonardo DiCaprio's 30+ year artistic journey, the iconic Martin Scorsese partnership, and his lifelong devotion to environmental preservation."
         bgGradient="from-emerald-950/20 via-amber-500/5 to-transparent"
       />
 

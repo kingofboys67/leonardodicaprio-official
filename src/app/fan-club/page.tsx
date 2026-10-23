@@ -1,7 +1,6 @@
 import type { Metadata } from 'next';
-import React from 'react';
 import { FanClubPage } from '../../views/FanClubPage';
-import { getBreadcrumbSchema, BASE_URL } from '../../utils/schema';
+import { getWebPageSchema, getBreadcrumbSchema, BASE_URL } from '../../utils/schema';
 
 export const metadata: Metadata = {
   title: 'Fan Club & Cinema Society | Leonardo DiCaprio',
@@ -16,7 +15,7 @@ export const metadata: Metadata = {
       'Join the official Leonardo DiCaprio Cinema Society, create your custom membership passport, and test your knowledge in the Oscar film trivia challenge.',
     url: `${BASE_URL}/fan-club`,
     siteName: 'Leonardo DiCaprio Official',
-    images: [{ url: '/photos/leo_hero.jpg', width: 1200, height: 630, alt: 'Leonardo DiCaprio Fan Club' }],
+    images: [{ url: '/og/leonardo-dicaprio-1200x630.jpg', width: 1200, height: 630, alt: 'Leonardo DiCaprio Fan Club' }],
     type: 'website',
   },
   twitter: {
@@ -24,11 +23,19 @@ export const metadata: Metadata = {
     title: 'Fan Club & Cinema Society | Leonardo DiCaprio',
     description:
       'Join the official Leonardo DiCaprio Cinema Society, create your custom membership passport, and test your knowledge in the Oscar film trivia challenge.',
-    images: ['/photos/leo_hero.jpg'],
+    images: ['/og/leonardo-dicaprio-1200x630.jpg'],
   },
 };
 
 export default function FanClubRoute() {
+  const pageSchema = getWebPageSchema({
+    path: '/fan-club',
+    name: 'Fan Club & Cinema Society | Leonardo DiCaprio',
+    description:
+      'Join the official Leonardo DiCaprio Cinema Society, create your custom membership passport, and test your knowledge in the Oscar film trivia challenge.',
+    type: 'WebPage',
+    image: '/og/leonardo-dicaprio-1200x630.jpg',
+  });
   const breadcrumbsSchema = getBreadcrumbSchema([
     { name: 'Fan Club & Society', path: '/fan-club' },
   ]);
@@ -37,7 +44,9 @@ export default function FanClubRoute() {
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbsSchema) }}
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify([pageSchema, breadcrumbsSchema]),
+        }}
       />
       <FanClubPage />
     </>

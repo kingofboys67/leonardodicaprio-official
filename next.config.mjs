@@ -7,8 +7,10 @@ const __dirname = path.dirname(__filename);
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
+  poweredByHeader: false,
   images: {
     formats: ['image/avif', 'image/webp'],
+    minimumCacheTTL: 2678400,
     remotePatterns: [
       {
         protocol: 'https',
@@ -40,8 +42,32 @@ const nextConfig = {
       'react-router-dom': './src/navigation.tsx',
     },
   },
+  async redirects() {
+    return [
+      {
+        // Single canonical host: https://leonardodicaprioofficial.com (no www).
+        source: '/:path*',
+        has: [{ type: 'host', value: 'www.leonardodicaprioofficial.com' }],
+        destination: 'https://leonardodicaprioofficial.com/:path*',
+        permanent: true,
+      },
+    ];
+  },
   async headers() {
     return [
+      {
+        // Keep the API out of the index even if robots.txt is ignored.
+        source: '/api/:path*',
+        headers: [{ key: 'X-Robots-Tag', value: 'noindex, nofollow' }],
+      },
+      {
+        source: '/photos/:path*',
+        headers: [{ key: 'Cache-Control', value: 'public, max-age=86400, stale-while-revalidate=604800' }],
+      },
+      {
+        source: '/assets/:path*',
+        headers: [{ key: 'Cache-Control', value: 'public, max-age=86400, stale-while-revalidate=604800' }],
+      },
       {
         source: '/:path*',
         headers: [

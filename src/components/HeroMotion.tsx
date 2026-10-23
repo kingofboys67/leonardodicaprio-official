@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect, useRef, useState } from 'react';
-import { Sparkles, ArrowRight, ShieldCheck, Heart, Film, Sliders, Eye, RefreshCw } from 'lucide-react';
+import { Sparkles, ArrowRight, ShieldCheck, Heart, Film, Sliders } from 'lucide-react';
 
 interface HeroMotionProps {
   onNavigate: (sectionId: string) => void;
@@ -17,7 +17,6 @@ export const HeroMotion: React.FC<HeroMotionProps> = ({ onNavigate, onOpenSearch
   const [smoothTilt, setSmoothTilt] = useState({ rx: 0, ry: 0 });
   const [waveMode, setWaveMode] = useState<'liquid' | 'aurora' | 'pulse'>('liquid');
   const [selectedPhoto, setSelectedPhoto] = useState<string>('/leo_hero.jpg');
-  const [isPhotoSwitched, setIsPhotoSwitched] = useState(false);
 
   // Available hero photos to switch between
   const heroOptions = [

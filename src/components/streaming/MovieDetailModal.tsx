@@ -11,9 +11,7 @@ import {
   Calendar,
   Clock,
   DollarSign,
-  UserCheck,
   Quote,
-  Film,
 } from 'lucide-react';
 import { Movie } from '../../data/content';
 

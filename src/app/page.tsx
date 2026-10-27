@@ -4,7 +4,7 @@ import { getWebPageSchema, BASE_URL } from '../utils/schema';
 
 const HOME_TITLE = 'Leonardo DiCaprio | Official Website';
 const HOME_DESCRIPTION =
-  'Official website and digital archive of Academy Award-winning actor, UN Messenger of Peace, and environmental activist Leonardo DiCaprio.';
+  'Leonardo DiCaprio: Academy Award-winning actor, UN Messenger of Peace and environmentalist. Filmography, biography, awards and conservation work.';
 
 export const metadata: Metadata = {
   title: HOME_TITLE,
@@ -38,12 +38,16 @@ export const metadata: Metadata = {
 export default function Page() {
   // Person, Organization and WebSite entities are emitted once, in the root layout.
   const schemas = [
-    getWebPageSchema({
-      path: '/',
-      name: HOME_TITLE,
-      description: HOME_DESCRIPTION,
-      image: '/og/leonardo-dicaprio-1200x630.jpg',
-    }),
+    {
+      ...getWebPageSchema({
+        path: '/',
+        name: HOME_TITLE,
+        description: HOME_DESCRIPTION,
+        image: '/og/leonardo-dicaprio-1200x630.jpg',
+      }),
+      // The home page is the primary entity page for Leonardo DiCaprio.
+      mainEntity: { '@id': `${BASE_URL}/#person` },
+    },
   ];
 
   return (

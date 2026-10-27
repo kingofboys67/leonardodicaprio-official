@@ -157,10 +157,10 @@ export const HomePage: React.FC = () => {
           <div className="lg:col-span-8">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full glass-panel text-xs font-mono text-[#F28C28] mb-3 border border-[#F28C28]/30">
               <Heart className="w-3.5 h-3.5" />
-              <span>MEET LEONARDO</span>
+              <span>LEONARDO DICAPRIO</span>
             </div>
             <h2 className="cinema-title text-2xl sm:text-4xl font-black text-[#141414] dark:text-white tracking-tight mb-5">
-              The Man Behind the <span className="gold-text-gradient">Roles</span>
+              Who Is <span className="gold-text-gradient">Leonardo DiCaprio</span>?
             </h2>
             <div className="space-y-4 text-sm sm:text-base text-[var(--text-muted)] leading-relaxed max-w-2xl">
               <p>

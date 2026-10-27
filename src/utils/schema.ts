@@ -75,6 +75,15 @@ export const getPersonSchema = () => {
       '@type': 'Country',
       name: 'United States',
     },
+    hasOccupation: [
+      { '@type': 'Occupation', name: 'Actor' },
+      { '@type': 'Occupation', name: 'Film producer' },
+      { '@type': 'Occupation', name: 'Environmental activist' },
+    ],
+    subjectOf: [
+      { '@type': 'WebPage', '@id': `${BASE_URL}/#webpage` },
+      { '@type': 'ProfilePage', '@id': `${BASE_URL}/legacy#webpage` },
+    ],
     sameAs: [
       'https://en.wikipedia.org/wiki/Leonardo_DiCaprio',
       'https://www.wikidata.org/wiki/Q38170',

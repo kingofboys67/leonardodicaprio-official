@@ -44,10 +44,28 @@ const nextConfig = {
   },
   async redirects() {
     return [
+      // Common sitemap submission mistakes -> canonical sitemap.
+      { source: '/xml', destination: '/sitemap.xml', permanent: true },
+      { source: '/sitemap', destination: '/sitemap.xml', permanent: true },
+      { source: '/sitemap_index.xml', destination: '/sitemap.xml', permanent: true },
+      { source: '/sitemap-index.xml', destination: '/sitemap.xml', permanent: true },
       {
         // Single canonical host: https://leonardodicaprioofficial.com (no www).
         source: '/:path*',
         has: [{ type: 'host', value: 'www.leonardodicaprioofficial.com' }],
+        destination: 'https://leonardodicaprioofficial.com/:path*',
+        permanent: true,
+      },
+      {
+        // If the misspelled domain is ever attached to this project, fold it in.
+        source: '/:path*',
+        has: [{ type: 'host', value: 'leonardodicapriofficial.com' }],
+        destination: 'https://leonardodicaprioofficial.com/:path*',
+        permanent: true,
+      },
+      {
+        source: '/:path*',
+        has: [{ type: 'host', value: 'www.leonardodicapriofficial.com' }],
         destination: 'https://leonardodicaprioofficial.com/:path*',
         permanent: true,
       },

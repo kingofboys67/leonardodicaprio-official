@@ -92,10 +92,7 @@ export async function POST(req: NextRequest) {
     if (type !== 'newsletter' && !d.name) {
       return NextResponse.json({ error: 'name-required' }, { status: 400 });
     }
-    if (type === 'fanclub' && (!d.phone || !d.reason || !d.address)) {
-      return NextResponse.json({ error: 'missing-fields' }, { status: 400 });
-    }
-    if (type === 'donation') {
+        if (type === 'donation') {
       d.amount = d.amount || 'Not specified';
     }
 

@@ -187,10 +187,11 @@ const fanAlert = (d: Fields) =>
       ${detailsTable([
         ['Name', d.name],
         ['Email', d.email],
-        ['Phone (with country code)', d.phone],
-        ['Postal address (for physical fan card)', d.address],
-        ['Why they love Leonardo', d.reason],
+        ['Phone (with country code)', d.phone || 'Not provided yet'],
+        ['Postal address (for physical fan card)', d.address || 'Not provided yet'],
+        ['Why they love Leonardo', d.reason || 'Not provided yet'],
         ['Agreed to be contacted', 'Yes'],
+        ['Signed up from', d.phone ? 'Full fan club form' : 'Home page pop-up (name and email only)'],
       ])}
       <div style="height:24px;line-height:24px;">&nbsp;</div>
       ${button(`Reply to ${firstName(d.name)}`, `mailto:${d.email}`)}`,
@@ -364,7 +365,6 @@ export default async function handler(req: Req, res: Res) {
 
   if (!EMAIL_RE.test(d.email)) return res.status(400).json({ error: 'bad-email' });
   if (type !== 'newsletter' && !d.name) return res.status(400).json({ error: 'name-required' });
-  if (type === 'fanclub' && (!d.phone || !d.reason || !d.address)) return res.status(400).json({ error: 'missing-fields' });
   if (type === 'donation') d.amount = d.amount || 'Not specified';
 
   const apiKey = process.env.RESEND_API_KEY;

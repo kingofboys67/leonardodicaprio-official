@@ -12,6 +12,7 @@ import {
   ArrowRight,
   Play,
 } from 'lucide-react';
+import { FanClubPopup } from '../components/FanClubPopup';
 import { HeroSection } from '../components/official/HeroSection';
 import {
   Movie,
@@ -397,6 +398,7 @@ export const HomePage: React.FC = () => {
           </div>
         </div>
       </section>
+      <FanClubPopup />
     </div>
   );
 };

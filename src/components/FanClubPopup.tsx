@@ -7,28 +7,30 @@ import { X, Check } from 'lucide-react';
 import { submitForm } from '../lib/submitForm';
 
 const STORAGE_KEY = 'ld-fanclub-popup';
-const SHOW_AFTER_MS = 1800;
-const SNOOZE_DAYS = 7;
+const SHOW_AFTER_MS = 1200;
 
-const readState = (): { joined?: boolean; dismissedAt?: number } => {
+// Closing the pop-up hides it until the page is loaded or refreshed again. Joining hides it for good.
+let closedThisPageLoad = false;
+
+const hasJoined = (): boolean => {
   try {
-    return JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+    return JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}').joined === true;
   } catch {
-    return {};
+    return false;
   }
 };
-const writeState = (s: { joined?: boolean; dismissedAt?: number }) => {
+const markJoined = () => {
   try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(s));
+    localStorage.setItem(STORAGE_KEY, JSON.stringify({ joined: true }));
   } catch {
-    /* storage can be blocked; the popup then simply shows again next visit */
+    /* storage can be blocked; the pop-up then simply shows again next visit */
   }
 };
 
 /**
  * A small pop-up shown on the home page: the fan card preview with a two-field sign-up.
  * It sits above the page and does not change the layout underneath. Closing it hides it
- * for a week; joining hides it for good.
+ * until the next page load; joining hides it for good.
  */
 export const FanClubPopup: React.FC = () => {
   const [open, setOpen] = useState(false);
@@ -38,16 +40,14 @@ export const FanClubPopup: React.FC = () => {
   const [status, setStatus] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle');
 
   useEffect(() => {
-    const s = readState();
-    if (s.joined) return;
-    if (s.dismissedAt && Date.now() - s.dismissedAt < SNOOZE_DAYS * 86400000) return;
+    if (closedThisPageLoad || hasJoined()) return;
     const t = window.setTimeout(() => setOpen(true), SHOW_AFTER_MS);
     return () => window.clearTimeout(t);
   }, []);
 
   const close = () => {
     setOpen(false);
-    if (status !== 'sent') writeState({ dismissedAt: Date.now() });
+    closedThisPageLoad = true;
   };
 
   useEffect(() => {
@@ -65,7 +65,7 @@ export const FanClubPopup: React.FC = () => {
     const result = await submitForm('fanclub', { name, email, website: trap });
     if (result.ok) {
       setStatus('sent');
-      writeState({ joined: true });
+      markJoined();
     } else {
       setStatus('error');
     }

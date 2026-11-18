@@ -25,7 +25,11 @@ const payload = JSON.stringify({
   urlList: urlList.slice(0, 100), // IndexNow allows up to 10,000 per request
 });
 
-export async function pingIndexNow() {
+// Participating IndexNow endpoints. Each one shares submissions with the others, but we ping
+// Yandex as well so updates still get through if one engine rejects the site.
+const ENDPOINTS = ['api.indexnow.org', 'yandex.com'];
+
+function pingEndpoint(hostname) {
   return new Promise((resolve) => {
     // If running in local/test environment or dry run mode, allow graceful fallback
     const dryRun = process.env.INDEXNOW_DRY_RUN === 'true';
@@ -40,7 +44,7 @@ export async function pingIndexNow() {
     }
 
     const options = {
-      hostname: 'api.indexnow.org',
+      hostname,
       port: 443,
       path: '/indexnow',
       method: 'POST',
@@ -58,10 +62,10 @@ export async function pingIndexNow() {
       res.on('end', () => {
         // IndexNow returns 200 (OK) or 202 (Accepted)
         if (res.statusCode === 200 || res.statusCode === 202) {
-          console.log(`[IndexNow] Successfully submitted ${urlList.length} URLs. Status: ${res.statusCode}`);
+          console.log(`[IndexNow] ${hostname}: submitted ${urlList.length} URLs. Status: ${res.statusCode}`);
           resolve({ status: res.statusCode, body: data });
         } else {
-          console.warn(`[IndexNow] Response status: ${res.statusCode}, body: ${data}`);
+          console.warn(`[IndexNow] ${hostname} response status: ${res.statusCode}, body: ${data}`);
           // IndexNow may return 422 if key is not yet reachable on a live public domain
           resolve({ status: res.statusCode, body: data });
         }
@@ -69,19 +73,25 @@ export async function pingIndexNow() {
     });
 
     req.on('error', (e) => {
-      console.warn(`[IndexNow] Ping warning (offline or domain pending DNS): ${e.message}`);
+      console.warn(`[IndexNow] ${hostname} ping warning (offline or domain pending DNS): ${e.message}`);
       resolve({ status: 0, error: e.message });
     });
 
     req.on('timeout', () => {
       req.destroy();
-      console.warn('[IndexNow] Ping request timed out (safe to continue build).');
+      console.warn(`[IndexNow] ${hostname} ping request timed out (safe to continue build).`);
       resolve({ status: 408, error: 'Timeout' });
     });
 
     req.write(payload);
     req.end();
   });
+}
+
+export async function pingIndexNow() {
+  const results = [];
+  for (const host of ENDPOINTS) results.push(await pingEndpoint(host));
+  return results[0];
 }
 
 // Execute directly if run via CLI

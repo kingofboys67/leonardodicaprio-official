@@ -182,19 +182,11 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{
             __html: `
               (function() {
-                try {
-                  var saved = localStorage.getItem('theme') || localStorage.getItem('leo_theme');
-                  var systemDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-                  var theme = (saved === 'light' || saved === 'dark') ? saved : (systemDark ? 'dark' : 'light');
-                  if (theme === 'dark') {
-                    document.documentElement.classList.add('dark');
-                    document.documentElement.classList.remove('light');
-                  } else {
-                    document.documentElement.classList.remove('dark');
-                    document.documentElement.classList.add('light');
-                  }
-                  document.documentElement.setAttribute('data-theme', theme);
-                } catch (e) {}
+                var d = document.documentElement;
+                d.classList.remove('light');
+                d.classList.add('dark');
+                d.setAttribute('data-theme', 'dark');
+                try { localStorage.removeItem('theme'); localStorage.removeItem('leo_theme'); } catch (e) {}
               })();
             `,
           }}

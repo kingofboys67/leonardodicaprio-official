@@ -13,7 +13,6 @@ import {
   Play,
 } from 'lucide-react';
 import { FanClubPopup } from '../components/FanClubPopup';
-import { HeroSection } from '../components/official/HeroSection';
 import {
   Movie,
   MOVIES_DATA,
@@ -103,8 +102,7 @@ const PosterCard: React.FC<{
 };
 
 export const HomePage: React.FC = () => {
-  const navigate = useNavigate();
-  const { playMovie, openMovieDetail, openLightbox, playReel } = useApp();
+  const { playMovie, openLightbox, playReel } = useApp();
 
   // Curated 3 featured movies
   const featuredMovies = MOVIES_DATA.filter((m) =>
@@ -124,22 +122,41 @@ export const HomePage: React.FC = () => {
 
   return (
     <div className="min-h-screen">
-      {/* 1. Hero Cinema Showcase */}
-      <HeroSection
-        movies={MOVIES_DATA}
-        onPlayMovie={playMovie}
-        onOpenMovieDetail={openMovieDetail}
-        onNavigate={(sectionId) => {
-          if (sectionId === 'movies' || sectionId === 'filmography') navigate('/filmography');
-          else if (sectionId === 'gallery') navigate('/gallery');
-          else if (sectionId === 'about' || sectionId === 'legacy') navigate('/legacy');
-          else if (sectionId === 'reels') navigate('/reels');
-          else if (sectionId === 'achievements') navigate('/achievements');
-          else if (sectionId === 'charity') navigate('/charity');
-          else if (sectionId === 'fanclub' || sectionId === 'fan-club') navigate('/fan-club');
-          else navigate('/');
-        }}
-      />
+      {/* 1. Landing hero: photo background with two actions */}
+      <section className="relative h-[100svh] min-h-[560px] overflow-hidden bg-black">
+        {/* Soft blurred backdrop so the sides blend into the photo */}
+        <img
+          src="/leo_hero.jpg"
+          alt=""
+          aria-hidden="true"
+          className="absolute inset-0 w-full h-full object-cover scale-110 blur-2xl opacity-40"
+        />
+        {/* Main photo: fills the width, dropped below the menu so face and hair stay visible */}
+        <img
+          src="/leo_hero.jpg"
+          alt="Leonardo DiCaprio"
+          className="absolute left-0 top-16 sm:top-20 w-full h-auto min-h-full object-cover object-top lg:left-1/2 lg:-translate-x-1/2 lg:w-auto lg:max-w-none lg:h-[124%] lg:min-h-0 lg:object-contain lg:[mask-image:linear-gradient(to_right,transparent,black_14%,black_86%,transparent)]"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-transparent to-black/20" />
+        <div className="relative z-10 h-full flex flex-col items-center justify-end px-4 pb-10 sm:pb-8">
+          <div className="flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto max-w-xs sm:max-w-none">
+            <Link
+              to="/fan-club"
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-4 rounded-full bg-[#F28C28] text-white text-sm sm:text-base font-bold shadow-lg shadow-orange-500/30 hover:bg-amber-500 transition-colors"
+            >
+              <Users className="w-4 h-4" />
+              Join Fan Club
+            </Link>
+            <Link
+              to="/filmography"
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-4 rounded-full border border-white/60 bg-white/10 backdrop-blur text-white text-sm sm:text-base font-bold hover:bg-white/20 transition-colors group"
+            >
+              Explore
+              <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+            </Link>
+          </div>
+        </div>
+      </section>
 
       {/* 1b. Meet Leonardo: short personal introduction */}
       <section className="py-14 sm:py-20 border-t border-[var(--border)]">

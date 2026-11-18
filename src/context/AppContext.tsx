@@ -10,9 +10,6 @@ import {
 } from '../data/content';
 
 interface AppContextType {
-  // Theme
-  theme: 'dark' | 'light';
-  toggleTheme: () => void;
 
   // Search
   isSearchOpen: boolean;
@@ -69,37 +66,12 @@ interface AppContextType {
 const AppContext = createContext<AppContextType | undefined>(undefined);
 
 export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  // Theme state
-  const [theme, setTheme] = useState<'dark' | 'light'>(() => {
-    try {
-      const saved = localStorage.getItem('theme') || localStorage.getItem('leo_theme');
-      if (saved === 'light' || saved === 'dark') return saved;
-      if (typeof window !== 'undefined' && window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) {
-        return 'light';
-      }
-    } catch (e) {}
-    return 'dark';
-  });
-
+  // Dark mode only
   useEffect(() => {
-    try {
-      localStorage.setItem('theme', theme);
-      localStorage.setItem('leo_theme', theme);
-    } catch (e) {}
-    if (theme === 'light') {
-      document.documentElement.classList.remove('dark');
-      document.documentElement.classList.add('light');
-      document.documentElement.setAttribute('data-theme', 'light');
-    } else {
-      document.documentElement.classList.remove('light');
-      document.documentElement.classList.add('dark');
-      document.documentElement.setAttribute('data-theme', 'dark');
-    }
-  }, [theme]);
-
-  const toggleTheme = () => {
-    setTheme((prev) => (prev === 'dark' ? 'light' : 'dark'));
-  };
+    document.documentElement.classList.remove('light');
+    document.documentElement.classList.add('dark');
+    document.documentElement.setAttribute('data-theme', 'dark');
+  }, []);
 
   // Search Modal state
   const [isSearchOpen, setIsSearchOpen] = useState<boolean>(false);
@@ -320,8 +292,6 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   return (
     <AppContext.Provider
       value={{
-        theme,
-        toggleTheme,
         isSearchOpen,
         setIsSearchOpen,
         isAudioPlaying,

@@ -224,24 +224,31 @@ export const Footer: React.FC = () => {
                 : '✓ Dispatch notifications opening soon.'}
             </div>
           ) : (
-            <form onSubmit={handleNewsletterSubmit} className="flex w-full md:w-auto max-w-md gap-2">
-              <input
-                type="email"
-                required
-                value={newsletterEmail}
-                onChange={(e) => setNewsletterEmail(e.target.value)}
-                placeholder="Enter your email"
-                aria-label="Email address for official newsletter"
-                className="flex-grow px-4 py-2.5 rounded-xl bg-white/5 border border-white/15 text-white placeholder-white/40 text-xs outline-none focus:border-orange-500 transition-colors"
-              />
-              <button
-                type="submit"
-                disabled={newsletterStatus === 'sending'}
-                className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-orange-500 to-amber-500 text-white font-bold text-xs shadow-md shadow-orange-500/20 hover:scale-105 transition-all cursor-pointer whitespace-nowrap"
-              >
-                {newsletterStatus === 'sending' ? 'Subscribing...' : 'Subscribe'}
-              </button>
-            </form>
+            <div className="w-full md:w-auto max-w-md">
+              <form onSubmit={handleNewsletterSubmit} className="flex gap-2">
+                <input
+                  type="email"
+                  required
+                  value={newsletterEmail}
+                  onChange={(e) => setNewsletterEmail(e.target.value)}
+                  placeholder="Enter your email"
+                  aria-label="Email address for official newsletter"
+                  className="flex-grow px-4 py-2.5 rounded-xl bg-white/5 border border-white/15 text-white placeholder-white/40 text-xs outline-none focus:border-orange-500 transition-colors"
+                />
+                <button
+                  type="submit"
+                  disabled={newsletterStatus === 'sending'}
+                  className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-orange-500 to-amber-500 text-white font-bold text-xs shadow-md shadow-orange-500/20 hover:scale-105 transition-all cursor-pointer whitespace-nowrap disabled:opacity-50"
+                >
+                  {newsletterStatus === 'sending' ? 'Subscribing...' : 'Subscribe'}
+                </button>
+              </form>
+              {newsletterStatus === 'error' && (
+                <p className="mt-2 text-xs text-red-400 text-left">
+                  Failed to subscribe. Please check your connection and try again.
+                </p>
+              )}
+            </div>
           )}
         </div>
 

@@ -51,13 +51,22 @@ const send = async (apiKey: string, payload: { from: string; to: string; subject
 const FROM_WELCOME = 'Leonardo DiCaprio Official <welcome@leonardodicaprioofficial.com>';
 const FROM_ALERTS = 'Website Sign-ups <notifications@leonardodicaprioofficial.com>';
 
+const isAllowedHost = (host: string) => {
+  if (ALLOWED_HOSTS.includes(host)) return true;
+  if (host === 'localhost' || host === '127.0.0.1' || host === '[::1]') return true;
+  if (host.endsWith('.vercel.app')) return true;
+  if (host === 'leonardodicaprioofficial.com' || host.endsWith('.leonardodicaprioofficial.com')) return true;
+  if (host === 'leonardodicapriofficial.com' || host.endsWith('.leonardodicapriofficial.com')) return true;
+  return false;
+};
+
 export async function POST(req: NextRequest) {
   try {
     const origin = req.headers.get('origin');
     if (origin) {
       try {
         const host = new URL(origin).hostname;
-        if (!ALLOWED_HOSTS.includes(host)) {
+        if (!isAllowedHost(host)) {
           return NextResponse.json({ error: 'forbidden' }, { status: 403 });
         }
       } catch {
@@ -121,6 +130,7 @@ export async function POST(req: NextRequest) {
     ]);
 
     if (alert.status === 'rejected') {
+      console.error('[submit] Resend alert email rejected:', alert.reason);
       return NextResponse.json({ error: 'send-failed' }, { status: 502 });
     }
 

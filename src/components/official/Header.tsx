@@ -4,8 +4,6 @@ import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import {
   Search,
-  Sun,
-  Moon,
   Volume2,
   VolumeX,
   Menu,
@@ -16,8 +14,6 @@ import { useApp } from '../../context/AppContext';
 export const Header: React.FC = () => {
   const location = useLocation();
   const {
-    theme,
-    toggleTheme,
     isAudioPlaying,
     toggleAudio,
     setIsSearchOpen,
@@ -139,21 +135,6 @@ export const Header: React.FC = () => {
             title="Search (⌘K)"
           >
             <Search className="w-4 h-4" />
-          </button>
-
-          {/* THEME TOGGLE Button (Sun in Dark Mode, Moon in Light Mode) */}
-          <button
-            id="theme-toggle-btn"
-            onClick={toggleTheme}
-            aria-label={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
-            className="w-9 h-9 sm:w-10 sm:h-10 rounded-full flex items-center justify-center bg-[var(--surface)] border border-[var(--border-strong)] text-[#141414] dark:text-white hover:border-[#F28C28] hover:text-[#F28C28] transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[#F28C28]/50 shadow-sm cursor-pointer"
-            title={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
-          >
-            {theme === 'dark' ? (
-              <Sun className="w-4 h-4 text-amber-400 hover:rotate-45 transition-transform duration-200" />
-            ) : (
-              <Moon className="w-4 h-4 text-[#F28C28] hover:-rotate-12 transition-transform duration-200" />
-            )}
           </button>
 
           {/* Mobile Hamburger Menu Toggle */}

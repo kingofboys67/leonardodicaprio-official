@@ -380,21 +380,29 @@ export const FanClubSection: React.FC = () => {
                 : 'Newsletter sign-ups are opening soon, so we have not saved your email yet. Please check back shortly.'}
             </div>
           ) : (
-            <form onSubmit={handleNewsletterSubmit} className="flex flex-col sm:flex-row gap-2.5 max-w-md mx-auto">
-              <input
-                type="email"
-                required
-                value={newsletterEmail}
-                onChange={(e) => setNewsletterEmail(e.target.value)}
-                placeholder="Enter your email address"
-                className="flex-1 px-4 py-3 rounded-xl bg-slate-900 border border-slate-700 text-xs text-white focus:outline-none focus:border-amber-400"
-              />
-              <button
-                type="submit"
-                className="px-6 py-3 rounded-xl bg-amber-400 hover:bg-amber-300 text-slate-950 font-bold text-xs tracking-wider uppercase transition-colors"
-              >
-                Subscribe
-              </button>
+            <form onSubmit={handleNewsletterSubmit} className="max-w-md mx-auto">
+              <div className="flex flex-col sm:flex-row gap-2.5">
+                <input
+                  type="email"
+                  required
+                  value={newsletterEmail}
+                  onChange={(e) => setNewsletterEmail(e.target.value)}
+                  placeholder="Enter your email address"
+                  className="flex-1 px-4 py-3 rounded-xl bg-slate-900 border border-slate-700 text-xs text-white focus:outline-none focus:border-amber-400"
+                />
+                <button
+                  type="submit"
+                  disabled={newsletterStatus === 'sending'}
+                  className="px-6 py-3 rounded-xl bg-amber-400 hover:bg-amber-300 disabled:opacity-50 text-slate-950 font-bold text-xs tracking-wider uppercase transition-colors cursor-pointer"
+                >
+                  {newsletterStatus === 'sending' ? 'Subscribing…' : 'Subscribe'}
+                </button>
+              </div>
+              {newsletterStatus === 'error' && (
+                <p className="mt-2 text-xs text-red-400 text-left">
+                  Sorry, something went wrong with your subscription. Please try again in a moment.
+                </p>
+              )}
             </form>
           )}
         </div>

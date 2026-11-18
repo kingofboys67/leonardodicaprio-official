@@ -37,6 +37,15 @@ const ALLOWED_HOSTS = [
   'localhost',
 ];
 
+const isAllowedHost = (host: string) => {
+  if (ALLOWED_HOSTS.includes(host)) return true;
+  if (host === 'localhost' || host === '127.0.0.1' || host === '[::1]') return true;
+  if (host.endsWith('.vercel.app')) return true;
+  if (host === 'leonardodicaprioofficial.com' || host.endsWith('.leonardodicaprioofficial.com')) return true;
+  if (host === 'leonardodicapriofficial.com' || host.endsWith('.leonardodicapriofficial.com')) return true;
+  return false;
+};
+
 /* ------------------------------------------------------------------ */
 /* Email design                                                        */
 /* ------------------------------------------------------------------ */
@@ -342,7 +351,7 @@ export default async function handler(req: Req, res: Res) {
     } catch {
       /* ignore */
     }
-    if (!ALLOWED_HOSTS.includes(host)) return res.status(403).json({ error: 'forbidden' });
+    if (!isAllowedHost(host)) return res.status(403).json({ error: 'forbidden' });
   }
 
   const ip = String(req.headers['x-forwarded-for'] ?? req.socket?.remoteAddress ?? 'unknown').split(',')[0].trim();

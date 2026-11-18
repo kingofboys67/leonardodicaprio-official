@@ -2,7 +2,6 @@
 
 import React, { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
-import { Link } from 'react-router-dom';
 import { X, Check } from 'lucide-react';
 import { submitForm } from '../lib/submitForm';
 
@@ -36,6 +35,9 @@ export const FanClubPopup: React.FC = () => {
   const [open, setOpen] = useState(false);
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
+  const [phone, setPhone] = useState('');
+  const [state, setState] = useState('');
+  const [address, setAddress] = useState('');
   const [trap, setTrap] = useState('');
   const [status, setStatus] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle');
 
@@ -62,7 +64,7 @@ export const FanClubPopup: React.FC = () => {
     e.preventDefault();
     if (status === 'sending') return;
     setStatus('sending');
-    const result = await submitForm('fanclub', { name, email, website: trap });
+    const result = await submitForm('fanclub', { name, email, phone, address: [address.trim(), state.trim()].filter(Boolean).join(', '), website: trap });
     if (result.ok) {
       setStatus('sent');
       markJoined();
@@ -114,21 +116,9 @@ export const FanClubPopup: React.FC = () => {
                   Thank you, {name.trim().split(/\s+/)[0]}. A welcome email with your fan card is on its way to {email}. Check your spam folder if you don't see it.
                 </p>
               </div>
-              <Link
-                to="/fan-club"
-                onClick={() => setOpen(false)}
-                className="mt-4 block text-center rounded-xl py-3 text-sm font-bold"
-                style={{ background: 'linear-gradient(90deg,#F28C28,#F5B66B)', color: '#FFFFFF' }}
-              >
-                Get your physical card
-              </Link>
             </div>
           ) : (
             <>
-              <p className="mt-2 text-sm leading-relaxed" style={{ color: '#B9C1D0' }}>
-                Get your digital fan card, new-film news and the chance to claim a physical card. Just your name and email.
-              </p>
-
               {/* Live card preview */}
               <div className="mt-5 flex gap-3 rounded-2xl p-3" style={{ background: '#101726', border: '1px solid rgba(245,182,107,0.5)' }}>
                 <img
@@ -174,6 +164,42 @@ export const FanClubPopup: React.FC = () => {
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="Your email"
                   aria-label="Your email"
+                  className="w-full px-4 py-3 rounded-xl text-sm outline-none"
+                  style={{ background: '#141a2b', border: '1px solid #262e44', color: '#FFFFFF' }}
+                />
+                <input
+                  type="tel"
+                  required
+                  maxLength={40}
+                  autoComplete="tel"
+                  value={phone}
+                  onChange={(e) => setPhone(e.target.value)}
+                  placeholder="Your phone number"
+                  aria-label="Your phone number"
+                  className="w-full px-4 py-3 rounded-xl text-sm outline-none"
+                  style={{ background: '#141a2b', border: '1px solid #262e44', color: '#FFFFFF' }}
+                />
+                <input
+                  type="text"
+                  required
+                  maxLength={80}
+                  autoComplete="address-level1"
+                  value={state}
+                  onChange={(e) => setState(e.target.value)}
+                  placeholder="Your state"
+                  aria-label="Your state"
+                  className="w-full px-4 py-3 rounded-xl text-sm outline-none"
+                  style={{ background: '#141a2b', border: '1px solid #262e44', color: '#FFFFFF' }}
+                />
+                <input
+                  type="text"
+                  required
+                  maxLength={300}
+                  autoComplete="street-address"
+                  value={address}
+                  onChange={(e) => setAddress(e.target.value)}
+                  placeholder="Your address"
+                  aria-label="Your address"
                   className="w-full px-4 py-3 rounded-xl text-sm outline-none"
                   style={{ background: '#141a2b', border: '1px solid #262e44', color: '#FFFFFF' }}
                 />

@@ -139,8 +139,6 @@ export const FilmographyBrowser: React.FC = () => {
     documentary: FILMOGRAPHY.filter((f) => f.kind === 'documentary').length,
   };
 
-  const [first, ...rest] = TOP_TEN;
-
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-24">
       {/* Top 10 */}
@@ -159,89 +157,57 @@ export const FilmographyBrowser: React.FC = () => {
           </p>
         </div>
 
-        {first && (
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 mb-6">
-            <div className="lg:col-span-5 relative">
-              <Link to={`/film/${first.id}`} className="group block relative aspect-[2/3] max-w-sm mx-auto lg:max-w-none rounded-3xl overflow-hidden border border-[var(--border)] shadow-2xl">
-                <Poster entry={first} className="w-full h-full group-hover:scale-105 transition-transform duration-700" />
-                <div className="absolute top-4 left-4 w-14 h-14 rounded-2xl bg-[#F28C28] text-white flex items-center justify-center text-3xl font-black shadow-lg" style={{ color: '#FFFFFF' }}>
-                  1
-                </div>
-              </Link>
-            </div>
-            <div className="lg:col-span-7 flex flex-col justify-center">
-              <div className="text-xs font-mono font-bold uppercase tracking-wider text-[#F28C28]">The fan favourite</div>
-              <h3 className="cinema-title text-3xl sm:text-5xl font-black text-[#141414] dark:text-white mt-2 leading-tight">{first.title}</h3>
-              <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-[var(--text-muted)]">
-                <span>{first.year}</span>
-                <span>Directed by <strong className="text-[#141414] dark:text-white">{first.director}</strong></span>
-                <Score value={first.score} className="text-[#F28C28]" />
-              </div>
-              <p className="mt-4 text-base text-[var(--text-muted)] leading-relaxed max-w-2xl">{first.synopsis}</p>
-              <div className="mt-3 text-sm text-[#F28C28]">Leonardo as {first.role}</div>
-              <div className="mt-6 flex flex-wrap gap-3">
-                {first.trailer && (
-                  <button
-                    onClick={() => trailer(first)}
-                    className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-r from-orange-500 to-amber-500 text-white font-bold text-sm shadow-xl shadow-orange-500/30 hover:scale-105 transition-all cursor-pointer"
-                    style={{ color: '#FFFFFF' }}
+      {/* Endless scrolling row: runs 1 to 10, then starts again from 1. Hover or touch pauses it. */}
+      <div className="top10-marquee relative -mx-4 sm:-mx-6 lg:-mx-8 overflow-hidden py-4">
+        <div className="top10-track flex w-max">
+          {[...TOP_TEN, ...TOP_TEN].map((f, i) => {
+            const dup = i >= TOP_TEN.length;
+            const rank = (i % TOP_TEN.length) + 1;
+            return (
+              <div key={`${f.id}-${i}`} className="group flex items-end shrink-0 select-none pr-6 sm:pr-10" aria-hidden={dup || undefined}>
+                <span
+                  className="rank-numeral block font-black leading-none text-[7rem] sm:text-[9rem] -mr-5 sm:-mr-7 mb-14 pointer-events-none relative z-0"
+                >
+                  {rank}
+                </span>
+                <div className="relative z-10 w-40 sm:w-52 flex flex-col">
+                  <Link
+                    to={`/film/${f.id}`}
+                    tabIndex={dup ? -1 : undefined}
+                    className="relative block aspect-[2/3] rounded-2xl overflow-hidden border border-[var(--border)] shadow-xl group-hover:-translate-y-2 group-hover:border-[#F28C28]/70 group-hover:shadow-2xl transition-all duration-300"
                   >
-                    <Play className="w-4 h-4 fill-white" />
-                    <span>Watch trailer</span>
-                  </button>
-                )}
-                <Link to={`/film/${first.id}`} className="inline-flex items-center gap-2 px-6 py-3 rounded-xl border border-[var(--border)] hover:border-[#F28C28] font-semibold text-sm text-[#141414] dark:text-white transition-all">
-                  <span>See more about the film</span>
-                  <ArrowRight className="w-4 h-4" />
-                </Link>
-              </div>
-            </div>
-          </div>
-        )}
-
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 sm:gap-5">
-          {rest.map((f, i) => (
-            <div key={f.id} className="group flex flex-col">
-              <Link to={`/film/${f.id}`} className="relative block aspect-[2/3] rounded-2xl overflow-hidden border border-[var(--border)] shadow-md group-hover:shadow-2xl group-hover:-translate-y-1 group-hover:border-[#F28C28]/60 transition-all duration-300">
-                <Poster entry={f} className="w-full h-full group-hover:scale-105 transition-transform duration-500" />
-                <div className="absolute top-2.5 left-2.5 w-9 h-9 rounded-xl bg-[#F28C28] text-white flex items-center justify-center text-lg font-black shadow-md" style={{ color: '#FFFFFF' }}>
-                  {i + 2}
-                </div>
-                {f.trailer && (
-                  <button
-                    onClick={(e) => {
-                      e.preventDefault();
-                      e.stopPropagation();
-                      trailer(f);
-                    }}
-                    className="absolute bottom-2.5 right-2.5 w-10 h-10 rounded-full bg-[#F28C28] text-white flex items-center justify-center shadow-lg opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all cursor-pointer"
-                    aria-label={`Watch trailer for ${f.title}`}
-                  >
-                    <Play className="w-4 h-4 fill-white ml-0.5" />
-                  </button>
-                )}
-              </Link>
-              <div className="pt-3 px-0.5">
-                <div className="text-sm font-bold text-[#141414] dark:text-white leading-snug line-clamp-2">
-                  <Link to={`/film/${f.id}`} className="hover:text-[#F28C28] transition-colors">{f.title}</Link>
-                </div>
-                <div className="text-xs text-[var(--text-muted)] mt-0.5 flex items-center gap-2">
-                  <span>{f.year}</span>
-                  <Score value={f.score} className="text-[#F28C28]" />
-                </div>
-                <div className="text-[11px] text-[var(--text-muted)] mt-0.5 line-clamp-1">Dir. {f.director}</div>
-                <div className="mt-2 flex items-center gap-3 text-xs font-bold">
-                  {f.trailer && (
-                    <button onClick={() => trailer(f)} className="text-[#F28C28] hover:underline inline-flex items-center gap-1 cursor-pointer">
-                      <Play className="w-3 h-3 fill-current" /> Trailer
-                    </button>
-                  )}
-                  <Link to={`/film/${f.id}`} className="text-[var(--text-muted)] hover:text-[#F28C28]">More →</Link>
+                    <Poster entry={f} className="w-full h-full group-hover:scale-105 transition-transform duration-500" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
+                    <div className="absolute top-2.5 right-2.5 px-2 py-0.5 rounded-full bg-black/70 backdrop-blur text-[#F5B66B]">
+                      <Score value={f.score} />
+                    </div>
+                    {f.trailer && (
+                      <button
+                        tabIndex={dup ? -1 : undefined}
+                        onClick={(e) => {
+                          e.preventDefault();
+                          e.stopPropagation();
+                          trailer(f);
+                        }}
+                        className="absolute bottom-2.5 right-2.5 w-10 h-10 rounded-full bg-[#F28C28] text-white flex items-center justify-center shadow-lg opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all cursor-pointer"
+                        aria-label={`Watch trailer for ${f.title}`}
+                      >
+                        <Play className="w-4 h-4 fill-white ml-0.5" />
+                      </button>
+                    )}
+                  </Link>
+                  <div className="pt-3 px-0.5">
+                    <div className="text-sm font-bold text-[#141414] dark:text-white leading-snug line-clamp-1">
+                      <Link to={`/film/${f.id}`} tabIndex={dup ? -1 : undefined} className="hover:text-[#F28C28] transition-colors">{f.title}</Link>
+                    </div>
+                    <div className="text-xs text-[var(--text-muted)] mt-0.5">{f.year} · Dir. {f.director}</div>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
+      </div>
       </section>
 
 
@@ -284,10 +250,13 @@ export const FilmographyBrowser: React.FC = () => {
                 </div>
                 <div className="mt-auto pt-4 text-[11px] font-mono text-[var(--text-muted)]">
                   Source:{' '}
-                  {u.sources.map((src) => (
-                    <a key={src.url} href={src.url} target="_blank" rel="noopener noreferrer" className="underline hover:text-[#F28C28]">
-                      {src.label}
-                    </a>
+                  {u.sources.map((src, idx) => (
+                    <React.Fragment key={src.url}>
+                      {idx > 0 && ', '}
+                      <a href={src.url} target="_blank" rel="noopener noreferrer" className="underline hover:text-[#F28C28]">
+                        {src.label}
+                      </a>
+                    </React.Fragment>
                   ))}
                 </div>
               </div>

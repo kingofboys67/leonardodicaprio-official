@@ -159,3 +159,26 @@
 }
 .dark-scope .text-\[\#141414\] { color: #ffffff !important; }
 .dark-scope .bg-\[var\(--surface\)\] { backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
+
+
+/* Top 10 filmography row: endless left-scroll, 1 to 10 then again from 1 */
+@keyframes top10-scroll {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+.top10-marquee {
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 6%, #000 94%, transparent);
+  mask-image: linear-gradient(to right, transparent, #000 6%, #000 94%, transparent);
+}
+.top10-track {
+  animation: top10-scroll 60s linear infinite;
+  will-change: transform;
+}
+.top10-marquee:hover .top10-track,
+.top10-marquee:active .top10-track {
+  animation-play-state: paused;
+}
+@media (prefers-reduced-motion: reduce) {
+  .top10-marquee { overflow-x: auto; }
+  .top10-track { animation: none; }
+}

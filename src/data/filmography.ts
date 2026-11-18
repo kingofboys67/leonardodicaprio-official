@@ -117,6 +117,21 @@ export const UPCOMING: UpcomingEntry[] = [
     ],
   },
   {
+    id: 'the-wager',
+    title: 'The Wager',
+    director: 'Martin Scorsese',
+    role: 'To star',
+    status: 'Announced, in development',
+    expected: 'No release date announced',
+    summary:
+      'An adaptation of David Grann\'s bestselling book The Wager: A Tale of Shipwreck, Mutiny and Murder, the true story of a British naval ship wrecked off the coast of Patagonia in the 1740s. Apple holds the rights, with Martin Scorsese directing and Leonardo starring, in what would be their seventh film together. No production start or release date has been confirmed.',
+    cast: ['Leonardo DiCaprio (attached)'],
+    sources: [
+      { label: 'Variety', url: 'https://variety.com/2022/film/news/martin-scorsese-leonardo-dicaprio-apple-the-wager-1235329331/' },
+      { label: 'Deadline', url: 'https://deadline.com/2022/07/leonardo-dicaprio-martin-scorsese-reteam-for-apple-film-the-wager-1235081275/' },
+    ],
+  },
+  {
     id: 'devil-in-the-white-city',
     title: 'The Devil in the White City',
     director: 'Martin Scorsese (in talks)',

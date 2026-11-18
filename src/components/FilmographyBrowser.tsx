@@ -225,7 +225,7 @@ export const FilmographyBrowser: React.FC = () => {
             What Leonardo has in the pipeline, as reported by public sources. Release dates and plans can change.
           </p>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-5">
           {UPCOMING.map((u) => (
             <div key={u.id} className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] overflow-hidden flex flex-col">
               <div
